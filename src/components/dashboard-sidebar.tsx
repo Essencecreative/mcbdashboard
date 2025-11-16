@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { Link, useLocation } from "react-router"
 import {
-  BarChart3,
   BookOpen,
   Briefcase,
   CalendarDays,
@@ -11,11 +10,18 @@ import {
   ImageIcon,
   Layers,
   LayoutDashboard,
+
   LifeBuoy,
   NewspaperIcon,
   RadioIcon,
   Settings,
+  TrendingUp,
   Users,
+  Megaphone,
+  MapPin,
+  Menu,
+  FileText,
+  HelpCircle,
 } from "lucide-react"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible"
 import {
@@ -38,26 +44,22 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/t
 
 export default function DashboardSidebar() {
   const { pathname } = useLocation()
-  const [openMenus, setOpenMenus] = useState<string[]>(["publications", "forland-reports", "news-events"]) // Default open menus
+  const [openMenus, setOpenMenus] = useState<string[]>(["investors", "news-events", "team-members", "menu-management"])
 
   const toggleMenu = (menuId: string) => {
-    setOpenMenus((prev) => (prev.includes(menuId) ? prev.filter((id) => id !== menuId) : [...prev, menuId]))
+    setOpenMenus((prev) =>
+      prev.includes(menuId) ? prev.filter((id) => id !== menuId) : [...prev, menuId]
+    )
   }
 
   const isMenuOpen = (menuId: string) => openMenus.includes(menuId)
 
-  // Check if a path is active
   const isActive = (path: string) => {
-    if (path === "/dashboard" && pathname === "/dashboard") {
-      return true
-    }
-    if (path !== "/dashboard" && pathname.includes(path)) {
-      return true
-    }
+    if (path === "/dashboard" && pathname === "/dashboard") return true
+    if (path !== "/dashboard" && pathname.includes(path)) return true
     return false
   }
 
-  // Helper component for truncated menu items with tooltips
   const TruncatedMenuItem = ({
     text,
     isActive,
@@ -70,143 +72,95 @@ export default function DashboardSidebar() {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <SidebarMenuSubButton isActive={isActive} onClick={onClick} className="truncate pr-2 text-xs">
+          <SidebarMenuSubButton
+            isActive={isActive}
+            onClick={onClick}
+            className="truncate pr-2 text-xs text-white hover:text-white/90"
+          >
             {text}
           </SidebarMenuSubButton>
         </TooltipTrigger>
-        <TooltipContent side="right">{text}</TooltipContent>
+        <TooltipContent side="right" className="bg-white text-gray-900">
+          {text}
+        </TooltipContent>
       </Tooltip>
     </TooltipProvider>
   )
 
   return (
-    <Sidebar className="w-64 shrink-0">
-      <SidebarHeader className="border-b px-3 py-2">
+    <Sidebar
+      className="w-64 shrink-0"
+      style={{
+        background: "linear-gradient(0deg, #0a3b73, #0e519a)",
+        borderRight: "none",
+      }}
+    >
+      <SidebarHeader className="border-b border-white/10 px-3 py-2">
         <div className="flex items-center gap-2">
-        <img
-    src="https://res.cloudinary.com/dedfrilse/image/upload/v1745827523/arcot15kf5uyb4wy3cov.png"
-    alt="Logo"
-    className="h-20 w-60 object-contain"
-  />
+          <img
+            src="https://res.cloudinary.com/dedfrilse/image/upload/v1762693722/logo-1_vpkruk.svg"
+            alt="Logo"
+            className="h-15 w-40 object-contain mb-4 mt-4"
+          />
         </div>
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="text-white">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
+              {/* Dashboard */}
               <SidebarMenuItem>
                 <Link to="/">
-                  <SidebarMenuButton isActive={isActive("/")}>
-                    <LayoutDashboard className="h-4 w-4" />
+                  <SidebarMenuButton
+                    isActive={isActive("/")}
+                    className="text-white hover:bg-white/10 data-[active=true]:bg-white/20 data-[active=true]:text-white"
+                  >
+                    <LayoutDashboard className="h-4 w-4 text-white" />
                     <span>Dashboard</span>
                   </SidebarMenuButton>
                 </Link>
               </SidebarMenuItem>
+                <SidebarMenuItem>
+                <Link to="/products">
+                  <SidebarMenuButton
+                    isActive={isActive("/products")}
+                    className="text-white hover:bg-white/10 data-[active=true]:bg-white/20 data-[active=true]:text-white"
+                  >
+                    <ImageIcon className="h-4 w-4 text-white" />
+                    <span>Products Carousel</span>
+                  </SidebarMenuButton>
+                </Link>
+              </SidebarMenuItem>
+                <SidebarMenuItem>
+                <Link to="/news-and-updates">
+                  <SidebarMenuButton
+                    isActive={isActive("/news-and-updates")}
+                    className="text-white hover:bg-white/10 data-[active=true]:bg-white/20 data-[active=true]:text-white"
+                  >
+                    <BookOpen className="h-4 w-4 text-white" />
+                    <span>News & Updates</span>
+                  </SidebarMenuButton>
+                </Link>
+              </SidebarMenuItem>
 
-              {/* Publications Menu with Submenu */}
+              {/* Investors */}
               <Collapsible
                 className="w-full"
-                open={isMenuOpen("publications")}
-                onOpenChange={() => toggleMenu("publications")}
+                open={isMenuOpen("investors")}
+                onOpenChange={() => toggleMenu("investors")}
               >
                 <SidebarMenuItem>
                   <CollapsibleTrigger className="w-full" asChild>
-                    <SidebarMenuButton isActive={isActive("/publications")}>
-                      <BookOpen className="h-4 w-4" />
-                      <span>Publications</span>
-                      <ChevronDown
-                        className={`ml-auto h-4 w-4 shrink-0 transition-transform duration-200 ${
-                          isMenuOpen("publications") ? "rotate-180" : ""
-                        }`}
-                      />
-                    </SidebarMenuButton>
-                  </CollapsibleTrigger>
-                </SidebarMenuItem>
-                <CollapsibleContent>
-                  <SidebarMenuSub>
-                    <SidebarMenuSubItem>
-                      <Link to="/publications?category=pfp">
-                        <SidebarMenuSubButton>
-                          PFP Technical Reports
-                        </SidebarMenuSubButton>
-                      </Link>
-                    </SidebarMenuSubItem>
-
-                    <SidebarMenuSubItem>
-                      <Link to="/publications?category=forvac">
-                        <SidebarMenuSubButton>
-                          FORVAC Technical Reports
-                        </SidebarMenuSubButton>
-                      </Link>
-                    </SidebarMenuSubItem>
-
-                    {/* FORLAND Reports Submenu */}
-                    <Collapsible
-                      className="w-full"
-                      open={isMenuOpen("forland-reports")}
-                      onOpenChange={() => toggleMenu("forland-reports")}
+                    <SidebarMenuButton
+                      isActive={isActive("/investors")}
+                      className="text-white hover:bg-white/10 data-[active=true]:bg-white/20"
                     >
-                      <SidebarMenuSubItem>
-                        <CollapsibleTrigger className="w-full" asChild>
-                          <SidebarMenuSubButton>
-                            FORLAND Reports
-                            <ChevronDown
-                              className={`ml-auto h-3 w-3 shrink-0 transition-transform duration-200 ${
-                                isMenuOpen("forland-reports") ? "rotate-180" : ""
-                              }`}
-                            />
-                          </SidebarMenuSubButton>
-                        </CollapsibleTrigger>
-                      </SidebarMenuSubItem>
-                      <CollapsibleContent>
-                        <SidebarMenuSub className="border-l-0 pl-2">
-                          <SidebarMenuSubItem>
-                            <Link to="/publications?category=forland&subcategory=admin">
-                              <TruncatedMenuItem text="Administration and Financial Reports" />
-                            </Link>
-                          </SidebarMenuSubItem>
-                          <SidebarMenuSubItem>
-                            <Link to="/publications?category=forland&subcategory=technical">
-                              <TruncatedMenuItem text="Project Technical Report" />
-                            </Link>
-                          </SidebarMenuSubItem>
-                          <SidebarMenuSubItem>
-                            <Link to="/publications?category=forland&subcategory=forms">
-                              <TruncatedMenuItem text="Forms and Guidelines" />
-                            </Link>
-                          </SidebarMenuSubItem>
-                          <SidebarMenuSubItem>
-                            <Link to="/publications?category=forland&subcategory=brochure">
-                              <TruncatedMenuItem text="Brochure & Newsletters" />
-                            </Link>
-                          </SidebarMenuSubItem>
-                          <SidebarMenuSubItem>
-                            <Link to="/publications?category=forland&subcategory=institutional">
-                              <TruncatedMenuItem text="Institutional Support" />
-                            </Link>
-                          </SidebarMenuSubItem>
-                        </SidebarMenuSub>
-                      </CollapsibleContent>
-                    </Collapsible>
-                  </SidebarMenuSub>
-                </CollapsibleContent>
-              </Collapsible>
-
-              {/* News & Events Menu with Submenu */}
-              <Collapsible
-                className="w-full"
-                open={isMenuOpen("news-events")}
-                onOpenChange={() => toggleMenu("news-events")}
-              >
-                <SidebarMenuItem>
-                  <CollapsibleTrigger className="w-full" asChild>
-                    <SidebarMenuButton isActive={isActive("/news-and-events")}>
-                      <CalendarDays className="h-4 w-4" />
-                      <span>News & Events</span>
+                      <TrendingUp className="h-4 w-4 text-white" />
+                      <span>Investors</span>
                       <ChevronDown
-                        className={`ml-auto h-4 w-4 shrink-0 transition-transform duration-200 ${
-                          isMenuOpen("news-events") ? "rotate-180" : ""
+                        className={`ml-auto h-4 w-4 shrink-0 transition-transform duration-200 text-white ${
+                          isMenuOpen("investors") ? "rotate-180" : ""
                         }`}
                       />
                     </SidebarMenuButton>
@@ -215,49 +169,46 @@ export default function DashboardSidebar() {
                 <CollapsibleContent>
                   <SidebarMenuSub>
                     <SidebarMenuSubItem>
-                      <Link to="/news-and-events?category=media">
-                        <SidebarMenuSubButton className="flex items-center gap-1.5">
-                          <NewspaperIcon className="h-3.5 w-3.5 text-blue-500" />
-                          Media News
-                        </SidebarMenuSubButton>
+                      <Link to="/investorsnews">
+                        <TruncatedMenuItem text="Investor News" />
                       </Link>
                     </SidebarMenuSubItem>
                     <SidebarMenuSubItem>
-                      <Link to="/news-and-events?category=general">
-                        <SidebarMenuSubButton className="flex items-center gap-1.5">
-                          <NewspaperIcon className="h-3.5 w-3.5 text-gray-500" />
-                          General News
-                        </SidebarMenuSubButton>
+                      <Link to="/investors?category=agm">
+                        <TruncatedMenuItem text="Annual General Meeting" />
                       </Link>
                     </SidebarMenuSubItem>
                     <SidebarMenuSubItem>
-                      <Link to="/news-and-events?category=events">
-                        <SidebarMenuSubButton className="flex items-center gap-1.5">
-                          <Users className="h-3.5 w-3.5 text-green-500" />
-                          Events and Trainings
-                        </SidebarMenuSubButton>
+                      <Link to="/investors?category=financial-reports">
+                        <TruncatedMenuItem text="Financial Reports" />
                       </Link>
                     </SidebarMenuSubItem>
                     <SidebarMenuSubItem>
-                      <Link to="/news-and-events?category=radio">
-                        <SidebarMenuSubButton className="flex items-center gap-1.5">
-                          <RadioIcon className="h-3.5 w-3.5 text-purple-500" />
-                          Radio Programmes
-                        </SidebarMenuSubButton>
+                      <Link to="/investors?category=tariff-guide">
+                        <TruncatedMenuItem text="Tariff Guide" />
                       </Link>
                     </SidebarMenuSubItem>
                     <SidebarMenuSubItem>
-                      <Link to="/news-and-events?category=gallery">
-                        <SidebarMenuSubButton className="flex items-center gap-1.5">
-                          <ImageIcon className="h-3.5 w-3.5 text-amber-500" />
-                          Photo Gallery
-                        </SidebarMenuSubButton>
+                      <Link to="/investors?category=shareholding">
+                        <TruncatedMenuItem text="Shareholding Structure" />
+                      </Link>
+                    </SidebarMenuSubItem>
+                    <SidebarMenuSubItem>
+                      <Link to="/investors?category=share-price">
+                        <TruncatedMenuItem text="Share Price" />
+                      </Link>
+                    </SidebarMenuSubItem>
+                    <SidebarMenuSubItem>
+                      <Link to="/investors?category=contact">
+                        <TruncatedMenuItem text="Investor Relations Contact" />
                       </Link>
                     </SidebarMenuSubItem>
                   </SidebarMenuSub>
                 </CollapsibleContent>
               </Collapsible>
 
+
+              {/* Opportunities */}
               <Collapsible
                 className="w-full"
                 open={isMenuOpen("opportunities")}
@@ -265,11 +216,14 @@ export default function DashboardSidebar() {
               >
                 <SidebarMenuItem>
                   <CollapsibleTrigger className="w-full" asChild>
-                    <SidebarMenuButton isActive={isActive("/news-and-events")}>
-                      <Briefcase className="h-4 w-4" />
+                    <SidebarMenuButton
+                      isActive={isActive("/opportunities")}
+                      className="text-white hover:bg-white/10 data-[active=true]:bg-white/20"
+                    >
+                      <Briefcase className="h-4 w-4 text-white" />
                       <span>Opportunities</span>
                       <ChevronDown
-                        className={`ml-auto h-4 w-4 shrink-0 transition-transform duration-200 ${
+                        className={`ml-auto h-4 w-4 shrink-0 transition-transform duration-200 text-white ${
                           isMenuOpen("opportunities") ? "rotate-180" : ""
                         }`}
                       />
@@ -279,17 +233,9 @@ export default function DashboardSidebar() {
                 <CollapsibleContent>
                   <SidebarMenuSub>
                     <SidebarMenuSubItem>
-                      <Link to="/opportunities?category=call-for-proposals">
-                        <SidebarMenuSubButton className="flex items-center gap-1.5">
-                          <NewspaperIcon className="h-3.5 w-3.5 text-blue-500" />
-                          Call for Proposals
-                        </SidebarMenuSubButton>
-                      </Link>
-                    </SidebarMenuSubItem>
-                    <SidebarMenuSubItem>
                       <Link to="/opportunities?category=job-vacancies">
-                        <SidebarMenuSubButton className="flex items-center gap-1.5">
-                          <NewspaperIcon className="h-3.5 w-3.5 text-gray-500" />
+                        <SidebarMenuSubButton className="flex items-center gap-1.5 text-white hover:bg-white/10">
+                          <NewspaperIcon className="h-3.5 w-3.5 text-gray-300" />
                           Job Vacancies
                         </SidebarMenuSubButton>
                       </Link>
@@ -297,37 +243,165 @@ export default function DashboardSidebar() {
                   </SidebarMenuSub>
                 </CollapsibleContent>
               </Collapsible>
-              {/* Team Members Menu Item */}
-              <SidebarMenuItem>
-                <Link to="/team">
-                  <SidebarMenuButton isActive={isActive("/team")}>
-                    <Users className="h-4 w-4" />
-                    <span>Team Members</span>
-                  </SidebarMenuButton>
-                </Link>
-              </SidebarMenuItem>
+
+              {/* Team Members */}
+              <Collapsible
+                className="w-full"
+                open={isMenuOpen("team-members")}
+                onOpenChange={() => toggleMenu("team-members")}
+              >
+                <SidebarMenuItem>
+                  <CollapsibleTrigger className="w-full" asChild>
+                    <SidebarMenuButton
+                      isActive={isActive("/board-of-directors") || isActive("/management")}
+                      className="text-white hover:bg-white/10 data-[active=true]:bg-white/20"
+                    >
+                      <Users className="h-4 w-4 text-white" />
+                      <span>Team Members</span>
+                      <ChevronDown
+                        className={`ml-auto h-4 w-4 shrink-0 transition-transform duration-200 text-white ${
+                          isMenuOpen("team-members") ? "rotate-180" : ""
+                        }`}
+                      />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                </SidebarMenuItem>
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    <SidebarMenuSubItem>
+                      <Link to="/board-of-directors">
+                        <TruncatedMenuItem text="Board of Directors" />
+                      </Link>
+                    </SidebarMenuSubItem>
+                    <SidebarMenuSubItem>
+                      <Link to="/management">
+                        <TruncatedMenuItem text="Management" />
+                      </Link>
+                    </SidebarMenuSubItem>
+                  </SidebarMenuSub>
+                </CollapsibleContent>
+              </Collapsible>
+
+              {/* User Management */}
               <SidebarMenuItem>
                 <Link to="/users">
-                  <SidebarMenuButton isActive={isActive("/team")}>
-                    <Users className="h-4 w-4" />
+                  <SidebarMenuButton
+                    isActive={isActive("/users")}
+                    className="text-white hover:bg-white/10 data-[active=true]:bg-white/20"
+                  >
+                    <Users className="h-4 w-4 text-white" />
                     <span>User Management</span>
                   </SidebarMenuButton>
                 </Link>
               </SidebarMenuItem>
 
-              {/* Analytics Menu Item */}
+              {/* Carousel */}
+              <SidebarMenuItem>
+                <Link to="/carousel">
+                  <SidebarMenuButton
+                    isActive={isActive("/carousel")}
+                    className="text-white hover:bg-white/10 data-[active=true]:bg-white/20"
+                  >
+                    <Layers className="h-4 w-4 text-white" />
+                    <span>Home Carousel</span>
+                  </SidebarMenuButton>
+                </Link>
+              </SidebarMenuItem>
+
+              {/* Header Update */}
+              <SidebarMenuItem>
+                <Link to="/header-update">
+                  <SidebarMenuButton
+                    isActive={isActive("/header-update")}
+                    className="text-white hover:bg-white/10 data-[active=true]:bg-white/20"
+                  >
+                    <Megaphone className="h-4 w-4 text-white" />
+                    <span>Header Update</span>
+                  </SidebarMenuButton>
+                </Link>
+              </SidebarMenuItem>
+
+              {/* Wakala Locations */}
+              <SidebarMenuItem>
+                <Link to="/wakala">
+                  <SidebarMenuButton
+                    isActive={isActive("/wakala")}
+                    className="text-white hover:bg-white/10 data-[active=true]:bg-white/20"
+                  >
+                    <MapPin className="h-4 w-4 text-white" />
+                    <span>Wakala Locations</span>
+                  </SidebarMenuButton>
+                </Link>
+              </SidebarMenuItem>
+
+              {/* FAQs */}
+              <SidebarMenuItem>
+                <Link to="/faqs">
+                  <SidebarMenuButton
+                    isActive={isActive("/faqs")}
+                    className="text-white hover:bg-white/10 data-[active=true]:bg-white/20"
+                  >
+                    <HelpCircle className="h-4 w-4 text-white" />
+                    <span>FAQs</span>
+                  </SidebarMenuButton>
+                </Link>
+              </SidebarMenuItem>
+
+              {/* Menu Management */}
+              <Collapsible
+                className="w-full"
+                open={isMenuOpen("menu-management")}
+                onOpenChange={() => toggleMenu("menu-management")}
+              >
+                <SidebarMenuItem>
+                  <CollapsibleTrigger className="w-full" asChild>
+                    <SidebarMenuButton
+                      isActive={isActive("/menu-categories") || isActive("/menu-items")}
+                      className="text-white hover:bg-white/10 data-[active=true]:bg-white/20"
+                    >
+                      <Menu className="h-4 w-4 text-white" />
+                      <span>Menu Management</span>
+                      <ChevronDown
+                        className={`ml-auto h-4 w-4 shrink-0 transition-transform duration-200 text-white ${
+                          isMenuOpen("menu-management") ? "rotate-180" : ""
+                        }`}
+                      />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                </SidebarMenuItem>
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    <SidebarMenuSubItem>
+                      <Link to="/menu-categories">
+                        <TruncatedMenuItem text="Menu Categories" />
+                      </Link>
+                    </SidebarMenuSubItem>
+                    <SidebarMenuSubItem>
+                      <Link to="/menu-items">
+                        <TruncatedMenuItem text="Menu Items" />
+                      </Link>
+                    </SidebarMenuSubItem>
+                  </SidebarMenuSub>
+                </CollapsibleContent>
+              </Collapsible>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
+        {/* Settings */}
         <SidebarGroup>
-          <SidebarGroupLabel>Settings</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-white/80 text-xs font-medium">
+            Settings
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
                 <Link to="/settings">
-                  <SidebarMenuButton isActive={isActive("/")}>
-                    <Settings className="h-4 w-4" />
+                  <SidebarMenuButton
+                    isActive={isActive("/settings")}
+                    className="text-white hover:bg-white/10 data-[active=true]:bg-white/20"
+                  >
+                    <Settings className="h-4 w-4 text-white" />
                     <span>Settings</span>
                   </SidebarMenuButton>
                 </Link>
@@ -337,16 +411,18 @@ export default function DashboardSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t p-3">
+      {/* Footer */}
+      <SidebarFooter className="border-t border-white/10 p-3">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton>
-              <LifeBuoy className="h-4 w-4" />
+            <SidebarMenuButton className="text-white hover:bg-white/10">
+              <LifeBuoy className="h-4 w-4 text-white" />
               <span>Help & Support</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
+
       <SidebarRail />
     </Sidebar>
   )

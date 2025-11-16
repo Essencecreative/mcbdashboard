@@ -61,7 +61,7 @@ export default function NewTeamMemberPage() {
       Object.entries(formData).forEach(([key, value]) => payload.append(key, value))
       if (photoFile) payload.append("photo", photoFile)
 
-      const res = await fetch("https://forlandservice.onrender.com/team/create-team-member", {
+      const res = await fetch("http://localhost:5000/team/create-team-member", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

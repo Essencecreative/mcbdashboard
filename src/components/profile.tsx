@@ -35,7 +35,7 @@ export default function ProfileSettingsPage() {
       if (!user?.id || !token) return
 
       try {
-        const res = await fetch(`https://forlandservice.onrender.com/users/${user.id}`, {
+        const res = await fetch(`http://localhost:5000/users/${user.id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -89,7 +89,7 @@ export default function ProfileSettingsPage() {
     }
 
     try {
-      const res = await fetch(`https://forlandservice.onrender.com/users/${user?.id}`, {
+      const res = await fetch(`http://localhost:5000/users/${user?.id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

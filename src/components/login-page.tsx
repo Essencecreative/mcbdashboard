@@ -26,7 +26,7 @@ export default function LoginPage() {
     e.preventDefault()
   
     try {
-      const response = await fetch("https://forlandservice.onrender.com/users/login", {
+      const response = await fetch("http://localhost:5000/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -57,13 +57,13 @@ export default function LoginPage() {
           <div className="z-10 max-w-md text-center">
             <h1 className="mb-6 text-4xl font-bold">Welcome Back</h1>
             <p className="mb-8 text-lg">
-Forestry, Land Use and Value Chains Development in Tanzania, 2025 - 2029
+Mwalimu Commercial Bank
             </p>
             <div className="text-sm opacity-75">2025 ©️ All rights Reserved. Designed by: Essence Creative</div>
           </div>
           <div className="absolute inset-0 opacity-20">
             <img
-              src="https://res.cloudinary.com/dedfrilse/image/upload/v1745827310/dtmaotmkfasppgaf2j8e.png"
+              src="https://res.cloudinary.com/dedfrilse/image/upload/v1762705967/IMG_0060_e457qo.jpg"
               alt="Background pattern"
               className="h-full w-full object-cover"
             />
@@ -75,7 +75,7 @@ Forestry, Land Use and Value Chains Development in Tanzania, 2025 - 2029
           <Card className="w-full max-w-md border-none shadow-none">
           <CardHeader className="space-y-4 flex flex-col items-center">
   <img
-    src="https://res.cloudinary.com/dedfrilse/image/upload/v1745827523/arcot15kf5uyb4wy3cov.png"
+    src="https://res.cloudinary.com/dedfrilse/image/upload/v1762706180/MCB-LOGO_b4bcyu.svg"
     alt="Logo"
     className="h-20 w-100 object-contain"
   />
@@ -136,6 +136,9 @@ Forestry, Land Use and Value Chains Development in Tanzania, 2025 - 2029
               <Button
   type="submit"
   className="w-full bg-[#024F28] hover:bg-[#02391f] text-white"
+  style={{
+    background: "linear-gradient(0deg, #0a3b73, #0e519a)"
+  }}
 >
   Sign in
 </Button>

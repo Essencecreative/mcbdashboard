@@ -33,13 +33,12 @@ type Opportunity = {
   documentUrl?: string
   date?: string
   createdAt?: string
-  category: "Job Vacancy" | "Call for Proposal"
+  category: "job"
 }
 
 const categoryOptions = [
   { value: "all", label: "All Opportunities" },
-  { value: "Call for Proposal", label: "Call for Proposal" },
-  { value: "Job Vacancy", label: "Job Vacancy" },
+  { value: "job", label: "Job Vacancy" },
 ]
 
 export default function OpportunitiesTable() {
@@ -64,7 +63,7 @@ export default function OpportunitiesTable() {
   useEffect(() => {
     const fetchOpportunities = async () => {
       try {
-        const res = await fetch("https://forlandservice.onrender.com/opportunities", {
+        const res = await fetch("http://localhost:5000/opportunities", {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -91,7 +90,7 @@ export default function OpportunitiesTable() {
       op.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       op.description.toLowerCase().includes(searchQuery.toLowerCase())
 
-    const matchesCategory = selectedCategory === "all" || op.category === selectedCategory
+    const matchesCategory = selectedCategory === "all" || op.category === selectedCategory || (selectedCategory === "job" && op.category === "job")
 
     return matchesSearch && matchesCategory
   })
@@ -122,7 +121,7 @@ export default function OpportunitiesTable() {
     if (deleteId) {
       setDeleting(true)
       try {
-        const res = await fetch(`https://forlandservice.onrender.com/opportunities/${deleteId}`, {
+        const res = await fetch(`http://localhost:5000/opportunities/${deleteId}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -249,11 +248,11 @@ export default function OpportunitiesTable() {
                         </TableCell>
                         <TableCell>
                           <Badge
-                            variant={op.category === "Call for Proposal" ? "default" : "secondary"}
+                            variant="secondary"
                             className="flex w-fit items-center gap-1"
                           >
                             <TagIcon className="h-3 w-3" />
-                            <span>{op.category}</span>
+                            <span>Job Vacancy</span>
                           </Badge>
                         </TableCell>
                         <TableCell className="flex gap-2">

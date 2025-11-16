@@ -14,7 +14,7 @@ export default function NewOpportunityPage() {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [category, setCategory] = useState("job") // "job" or "proposal"
+  const [category, setCategory] = useState("job")
   const [file, setFile] = useState<File | null>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -30,7 +30,7 @@ export default function NewOpportunityPage() {
     }
   
     try {
-      const res = await fetch("https://forlandservice.onrender.com/opportunities", {
+      const res = await fetch("http://localhost:5000/opportunities", {
         method: "POST",
         body: formData,
       })
@@ -52,7 +52,7 @@ export default function NewOpportunityPage() {
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">New Opportunity</h1>
-          <p className="text-muted-foreground">Create a new opportunity listing, such as a job vacancy or call for proposals.</p>
+          <p className="text-muted-foreground">Create a new job vacancy listing.</p>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -74,18 +74,15 @@ export default function NewOpportunityPage() {
               </div>
 
               <div className="space-y-2">
-              <Label htmlFor="category">Category</Label>
-              <select
-                id="category"
-                className="w-full border rounded px-3 py-2 bg-background"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                required
-              >
-                <option value="job">Job Vacancy</option>
-                <option value="proposal">Call for Proposal</option>
-              </select>
-            </div>
+                <Label htmlFor="category">Category</Label>
+                <Input
+                  id="category"
+                  value="Job Vacancy"
+                  disabled
+                  className="bg-muted"
+                />
+                <input type="hidden" name="category" value="job" />
+              </div>
 
 
               <div className="space-y-2">

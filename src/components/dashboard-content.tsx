@@ -23,12 +23,10 @@ export default function DashboardContent() {
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
-  console.log(data)
-  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("https://forlandservice.onrender.com/stats/summary", {
+        const res = await fetch("http://localhost:5000/stats/summary", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -82,65 +80,114 @@ export default function DashboardContent() {
   return (
     <DashboardLayout>
       <div className="flex flex-col gap-6">
+        {/* Main Metrics Grid */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {renderMetric("Total Opportunities", data?.opportunities.total, data?.opportunities.thisMonth)}
-          {renderMetric("Publications", data?.publications.total, data?.publications.thisMonth)}
-          {renderMetric("Team Members", data?.team.total, data?.team.thisMonth)}
-          {renderMetric("News & Events", data?.news.total, data?.news.thisMonth)}
+          {renderMetric("News & Updates", data?.newsAndUpdates?.total, data?.newsAndUpdates?.thisMonth)}
+          {renderMetric("Investor News", data?.investorNews?.total, data?.investorNews?.thisMonth)}
+          {renderMetric("Opportunities", data?.opportunities?.total, data?.opportunities?.thisMonth)}
+          {renderMetric("Products", data?.products?.total, data?.products?.thisMonth)}
         </div>
 
-        <Tabs defaultValue="opportunities" className="space-y-4">
-          <TabsList>
+        {/* Secondary Metrics Grid */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {renderMetric("Carousel Items", data?.carousels?.total, data?.carousels?.thisMonth)}
+          {renderMetric("Board Members", data?.boardMembers?.total, data?.boardMembers?.thisMonth)}
+          {renderMetric("Management", data?.management?.total, data?.management?.thisMonth)}
+          {renderMetric("Menu Items", data?.menuItems?.total, data?.menuItems?.thisMonth)}
+        </div>
+
+        {/* Additional Metrics Grid */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {renderMetric("Investor Categories", data?.investorCategories?.total, data?.investorCategories?.thisMonth)}
+          {renderMetric("Menu Categories", data?.menuCategories?.total, data?.menuCategories?.thisMonth)}
+          {renderMetric("Header Updates", data?.headerUpdates?.total, data?.headerUpdates?.thisMonth)}
+          {renderMetric("Exchange Rates", data?.foreignExchange?.total, data?.foreignExchange?.thisMonth)}
+        </div>
+
+        {/* User Metric */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {renderMetric("Total Users", data?.users?.total, data?.users?.thisMonth)}
+        </div>
+
+        {/* Charts Tabs */}
+        <Tabs defaultValue="newsAndUpdates" className="space-y-4">
+          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-6">
+            <TabsTrigger value="newsAndUpdates">News & Updates</TabsTrigger>
+            <TabsTrigger value="investorNews">Investor News</TabsTrigger>
             <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
-            <TabsTrigger value="publications">Publications</TabsTrigger>
-            <TabsTrigger value="team">Team Members</TabsTrigger>
-            <TabsTrigger value="news">News & Events</TabsTrigger>
+            <TabsTrigger value="products">Products</TabsTrigger>
+            <TabsTrigger value="carousels">Carousels</TabsTrigger>
+            <TabsTrigger value="menuItems">Menu Items</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="newsAndUpdates" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>News & Updates Trends</CardTitle>
+                <CardDescription>Monthly growth of news and updates content.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {renderChart(data?.newsAndUpdates?.trends, "News & Updates")}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="investorNews" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Investor News Trends</CardTitle>
+                <CardDescription>Monthly growth of investor news content.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {renderChart(data?.investorNews?.trends, "Investor News")}
+              </CardContent>
+            </Card>
+          </TabsContent>
 
           <TabsContent value="opportunities" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Recent Opportunities</CardTitle>
-                <CardDescription>Latest job listings, consultancies, and calls for proposals.</CardDescription>
+                <CardTitle>Opportunities Trends</CardTitle>
+                <CardDescription>Monthly growth of job opportunities and listings.</CardDescription>
               </CardHeader>
               <CardContent>
-                {renderChart(data?.opportunities.trends, "Opportunities")}
+                {renderChart(data?.opportunities?.trends, "Opportunities")}
               </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="publications" className="space-y-4">
+          <TabsContent value="products" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Latest Publications</CardTitle>
-                <CardDescription>Recently added reports and documents.</CardDescription>
+                <CardTitle>Products Trends</CardTitle>
+                <CardDescription>Monthly growth of banking products and services.</CardDescription>
               </CardHeader>
               <CardContent>
-                {renderChart(data?.publications.trends, "Publications")}
+                {renderChart(data?.products?.trends, "Products")}
               </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="team" className="space-y-4">
+          <TabsContent value="carousels" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Team Management</CardTitle>
-                <CardDescription>Add, remove, or update team members.</CardDescription>
+                <CardTitle>Carousel Items Trends</CardTitle>
+                <CardDescription>Monthly growth of carousel banner items.</CardDescription>
               </CardHeader>
               <CardContent>
-                {renderChart(data?.team.trends, "Team Members")}
+                {renderChart(data?.carousels?.trends, "Carousels")}
               </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="news" className="space-y-4">
+          <TabsContent value="menuItems" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>News & Events</CardTitle>
-                <CardDescription>Updates on internal or external events and announcements.</CardDescription>
+                <CardTitle>Menu Items Trends</CardTitle>
+                <CardDescription>Monthly growth of dynamic menu items.</CardDescription>
               </CardHeader>
               <CardContent>
-                {renderChart(data?.news.trends, "News")}
+                {renderChart(data?.menuItems?.trends, "Menu Items")}
               </CardContent>
             </Card>
           </TabsContent>

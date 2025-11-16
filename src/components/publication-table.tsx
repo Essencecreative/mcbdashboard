@@ -68,7 +68,7 @@ export default function PublicationsTable() {
     const fetchPublications = async () => {
       setLoading(true)
       try {
-        const res = await fetch(`https://forlandservice.onrender.com/publications?page=${currentPage}&limit=${itemsPerPage}`, {
+        const res = await fetch(`http://localhost:5000/publications?page=${currentPage}&limit=${itemsPerPage}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -283,7 +283,7 @@ export default function PublicationsTable() {
                                     onClick={async () => {
                                       setDeleting(true)
                                       try {
-                                        const res = await fetch(`https://forlandservice.onrender.com/publications/${publication._id}`, {
+                                        const res = await fetch(`http://localhost:5000/publications/${publication._id}`, {
                                           method: "DELETE",
                                           headers: {
                                             Authorization: `Bearer ${token}`,

@@ -77,7 +77,7 @@ const GalleryUploader = ({
     files.forEach(f => form.append("photos", f))
 
     try {
-      const res = await fetch("https://forlandservice.onrender.com/gallery", {
+      const res = await fetch("http://localhost:5000/gallery", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: form,
@@ -195,7 +195,7 @@ export default function NewsEventsTable() {
       // 1. Normal publications (always fetch, we filter later)
       try {
         const res = await fetch(
-          `https://forlandservice.onrender.com/news?page=${currentPage}&limit=${itemsPerPage}`,
+          `http://localhost:5000/news?page=${currentPage}&limit=${itemsPerPage}`,
           { headers: { Authorization: `Bearer ${token}` } }
         )
         const data = await res.json()
@@ -207,7 +207,7 @@ export default function NewsEventsTable() {
       if (selectedCategory === "Photo Gallery") {
         try {
           const res = await fetch(
-            `https://forlandservice.onrender.com/gallery?page=${currentPage}&limit=${itemsPerPage}`
+            `http://localhost:5000/gallery?page=${currentPage}&limit=${itemsPerPage}`
           )
           const data = await res.json()
           setGalleryItems(data.galleries || [])
@@ -246,8 +246,8 @@ export default function NewsEventsTable() {
   const handleDelete = async (id: string, isGallery: boolean) => {
     setDeleting(true)
     const endpoint = isGallery
-      ? `https://forlandservice.onrender.com/gallery/${id}`
-      : `https://forlandservice.onrender.com/news/${id}`
+      ? `http://localhost:5000/gallery/${id}`
+      : `http://localhost:5000/news/${id}`
 
     try {
       const res = await fetch(endpoint, {

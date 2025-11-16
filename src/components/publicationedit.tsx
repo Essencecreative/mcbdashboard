@@ -68,7 +68,7 @@ export default function EditPublicationPage() {
   useEffect(() => {
     const fetchPublication = async () => {
       try {
-        const res = await fetch(`https://forlandservice.onrender.com/publications/${id}`, {
+        const res = await fetch(`http://localhost:5000/publications/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -136,7 +136,7 @@ export default function EditPublicationPage() {
     }
 
     try {
-      const response = await fetch(`https://forlandservice.onrender.com/publications/${id}`, {
+      const response = await fetch(`http://localhost:5000/publications/${id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -49,7 +49,7 @@ export default function NewNewsEventPage() {
     }
 
     try {
-      const response = await fetch("https://forlandservice.onrender.com/news", {
+      const response = await fetch("http://localhost:5000/news", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -50,7 +50,7 @@ export default function UsersTable() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("https://forlandservice.onrender.com/users", {
+        const res = await fetch("http://localhost:5000/users", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -84,7 +84,7 @@ export default function UsersTable() {
   const handleDelete = async () => {
     if (!selectedUser) return
     try {
-      const res = await fetch(`https://forlandservice.onrender.com/users/delete-team-member/${selectedUser._id}`, {
+      const res = await fetch(`http://localhost:5000/users/delete-team-member/${selectedUser._id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -67,7 +67,7 @@ export default function NewPublicationPage() {
     }
 
     try {
-      const response = await fetch("https://forlandservice.onrender.com/publications", {
+      const response = await fetch("http://localhost:5000/publications", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
