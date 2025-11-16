@@ -26,7 +26,7 @@ export default function LoginPage() {
     e.preventDefault()
   
     try {
-      const response = await fetch("http://localhost:5000/users/login", {
+      const response = await fetch("http://66.29.133.39:5000/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
