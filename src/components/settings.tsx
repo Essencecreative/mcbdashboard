@@ -47,7 +47,7 @@ export default function SettingsPage() {
   const [itemsPerPage, setItemsPerPage] = useState("10")
   const [sessionTimeout, setSessionTimeout] = useState("60")
   const [maxFileSize, setMaxFileSize] = useState("10")
-  const [apiUrl, setApiUrl] = useState(process.env.REACT_APP_API_URL || "http://66.29.133.39:5000")
+  const [apiUrl, setApiUrl] = useState(process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz")
   const [maintenanceMode, setMaintenanceMode] = useState(false)
   const [debugMode, setDebugMode] = useState(false)
 
@@ -324,7 +324,7 @@ export default function SettingsPage() {
                   placeholder="http://localhost:5000"
                 />
                 <p className="text-xs text-muted-foreground">
-                  Current: {process.env.REACT_APP_API_URL || "http://66.29.133.39:5000"}
+                  Current: {process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}
                 </p>
               </div>
             </CardContent>

@@ -1,5 +1,5 @@
 // API Client with automatic token handling and error interception
-const API_BASE = process.env.REACT_APP_API_URL || "http://66.29.133.39:5000";
+const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz";
 
 // Get token from localStorage
 const getToken = (): string | null => {
