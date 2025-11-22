@@ -536,7 +536,7 @@ export default function MenuItemForm() {
                 </Button>
               </div>
               {formData.accordionItems.map((item, index) => (
-                <div key={index} className="border rounded-lg p-4 space-y-4">
+                <div key={index} className="border border-border rounded-lg p-4 space-y-4 bg-card">
                   <div className="flex items-center justify-between mb-2">
                     <Label>Accordion Item {index + 1}</Label>
                     <Button

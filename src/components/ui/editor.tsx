@@ -68,7 +68,7 @@ const MenuBar = ({ editor }: any) => {
   if (!editor) return null
 
   return (
-    <div className="flex flex-wrap items-center gap-1 p-2 border-b bg-gray-50 rounded-t-lg">
+    <div className="flex flex-wrap items-center gap-1 p-2 border-b bg-muted rounded-t-lg">
       <Button
         variant={state.isBold ? "default" : "ghost"}
         size="icon"
@@ -221,7 +221,7 @@ export const RichTextEditor = ({ value, onChange, placeholder }: RichTextEditorP
     },
     editorProps: {
       attributes: {
-        class: "prose prose-sm max-w-none p-4 min-h-64 focus:outline-none bg-white",
+        class: "prose prose-sm dark:prose-invert max-w-none p-4 min-h-64 focus:outline-none bg-background",
       },
     },
   })
@@ -229,7 +229,7 @@ export const RichTextEditor = ({ value, onChange, placeholder }: RichTextEditorP
   if (!editor) return null
 
   return (
-    <div className="border rounded-lg overflow-hidden shadow-sm">
+    <div className="border border-border rounded-lg overflow-hidden shadow-sm bg-background">
       <MenuBar editor={editor} />
       <EditorContent editor={editor} />
     </div>
