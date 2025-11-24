@@ -7,7 +7,7 @@ import { Label } from "./ui/label"
 import { Textarea } from "./ui/textarea"
 import { Checkbox } from "./ui/checkbox"
 import { Alert, AlertDescription } from "./ui/alert"
-import { AlertCircle, Plus, Trash2 } from "lucide-react"
+import { AlertCircle, Plus, Trash2, Upload } from "lucide-react"
 import DashboardLayout from "./dashboard-layout"
 import { createMenuCategory, updateMenuCategory, getMenuCategory } from "../lib/api"
 import { toast } from "../hooks/use-toast"
@@ -28,9 +28,12 @@ export default function MenuCategoryForm() {
       displayName: string
       position: number
       route: string
+      bannerImage: string
       isActive: boolean
     }>,
   })
+  const [subcategoryBannerFiles, setSubcategoryBannerFiles] = useState<{ [index: number]: File | null }>({})
+  const [subcategoryBannerPreviews, setSubcategoryBannerPreviews] = useState<{ [index: number]: string | null }>({})
   const [errors, setErrors] = useState<string[]>([])
   const [submitting, setSubmitting] = useState(false)
   const [loading, setLoading] = useState(isEdit)
@@ -46,8 +49,25 @@ export default function MenuCategoryForm() {
             displayName: data.displayName || "",
             position: data.position || 1,
             isActive: data.isActive !== undefined ? data.isActive : true,
-            subcategories: data.subcategories || [],
+            subcategories: (data.subcategories || []).map((sub: any) => ({
+              ...sub,
+              bannerImage: sub.bannerImage || "",
+            })),
           })
+          
+          // Set previews for existing banner images
+          const previews: { [index: number]: string | null } = {}
+          ;(data.subcategories || []).forEach((sub: any, index: number) => {
+            if (sub.bannerImage) {
+              const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+              if (sub.bannerImage.startsWith('http')) {
+                previews[index] = sub.bannerImage
+              } else {
+                previews[index] = `${API_BASE}/${sub.bannerImage}`
+              }
+            }
+          })
+          setSubcategoryBannerPreviews(previews)
         } catch (err: any) {
           toast({
             title: "Error",
@@ -79,9 +99,31 @@ export default function MenuCategoryForm() {
       ...prev,
       subcategories: [
         ...prev.subcategories,
-        { name: "", displayName: "", position: prev.subcategories.length + 1, route: "", isActive: true },
+        { name: "", displayName: "", position: prev.subcategories.length + 1, route: "", bannerImage: "", isActive: true },
       ],
     }))
+  }
+
+  const handleSubcategoryBannerChange = (index: number, file: File | null) => {
+    if (file) {
+      setSubcategoryBannerFiles((prev) => ({ ...prev, [index]: file }))
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setSubcategoryBannerPreviews((prev) => ({ ...prev, [index]: reader.result as string }))
+      }
+      reader.readAsDataURL(file)
+    } else {
+      setSubcategoryBannerFiles((prev => {
+        const updated = { ...prev }
+        delete updated[index]
+        return updated
+      }))
+      setSubcategoryBannerPreviews((prev => {
+        const updated = { ...prev }
+        delete updated[index]
+        return updated
+      }))
+    }
   }
 
   const removeSubcategory = (index: number) => {
@@ -113,14 +155,65 @@ export default function MenuCategoryForm() {
 
     setSubmitting(true)
     try {
+      // Upload banner images first if any
+      const updatedSubcategories = await Promise.all(
+        formData.subcategories.map(async (sub, index) => {
+          if (subcategoryBannerFiles[index]) {
+            // Upload the banner image using menu-items upload endpoint (reusing existing infrastructure)
+            const bannerFormData = new FormData()
+            bannerFormData.append("bannerImage", subcategoryBannerFiles[index]!)
+            
+            const token = localStorage.getItem("token")
+            const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+            
+            try {
+              // Upload banner image using menu-categories upload endpoint
+              const uploadRes = await fetch(`${API_BASE}/menu-categories/upload-banner`, {
+                method: "POST",
+                headers: {
+                  Authorization: token ? `Bearer ${token}` : "",
+                },
+                body: bannerFormData,
+              })
+              
+              if (uploadRes.ok) {
+                const uploadData = await uploadRes.json()
+                // Extract the banner image URL from response
+                const bannerUrl = uploadData.bannerImage || uploadData.url
+                if (bannerUrl) {
+                  return { ...sub, bannerImage: bannerUrl }
+                }
+              } else {
+                const errorData = await uploadRes.json().catch(() => ({}))
+                throw new Error(errorData.message || "Failed to upload banner image")
+              }
+            } catch (uploadError) {
+              console.error("Error uploading banner:", uploadError)
+              // Continue with existing bannerImage if upload fails
+              toast({
+                title: "Warning",
+                description: `Failed to upload banner for subcategory "${sub.displayName}": ${uploadError instanceof Error ? uploadError.message : 'Unknown error'}`,
+                variant: "destructive",
+              })
+            }
+          }
+          return sub
+        })
+      )
+
+      const finalFormData = {
+        ...formData,
+        subcategories: updatedSubcategories,
+      }
+
       if (isEdit && id) {
-        await updateMenuCategory(id, formData)
+        await updateMenuCategory(id, finalFormData)
         toast({
           title: "Success",
           description: "Menu category updated successfully!",
         })
       } else {
-        await createMenuCategory(formData)
+        await createMenuCategory(finalFormData)
         toast({
           title: "Success",
           description: "Menu category created successfully!",
@@ -294,6 +387,52 @@ export default function MenuCategoryForm() {
                       />
                     </div>
                   </div>
+                  
+                  {/* Banner Image Upload */}
+                  <div className="space-y-2">
+                    <Label>Banner Image</Label>
+                    <div className="flex items-center gap-4">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => document.getElementById(`subcategory-banner-${index}`)?.click()}
+                        disabled={submitting}
+                      >
+                        <Upload className="mr-2 h-4 w-4" />
+                        Choose Banner
+                      </Button>
+                      <Input
+                        id={`subcategory-banner-${index}`}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0] || null
+                          handleSubcategoryBannerChange(index, file)
+                        }}
+                        disabled={submitting}
+                      />
+                      {subcategoryBannerPreviews[index] && (
+                        <img 
+                          src={subcategoryBannerPreviews[index]!} 
+                          alt="Banner preview" 
+                          className="h-20 w-auto rounded border border-border" 
+                        />
+                      )}
+                      {sub.bannerImage && !subcategoryBannerPreviews[index] && (
+                        <img 
+                          src={sub.bannerImage.startsWith('http') ? sub.bannerImage : `${process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}/${sub.bannerImage}`} 
+                          alt="Current banner" 
+                          className="h-20 w-auto rounded border border-border" 
+                        />
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Banner image for this subcategory (used as page background)
+                    </p>
+                  </div>
+                  
                   <div className="flex items-center">
                     <Checkbox
                       checked={sub.isActive}
