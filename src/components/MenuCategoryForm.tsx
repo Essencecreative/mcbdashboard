@@ -400,7 +400,7 @@ export default function MenuCategoryForm() {
                       )}
                       {sub.bannerImage && !subcategoryBannerPreviews[index] && (
                         <img 
-                          src={sub.bannerImage.startsWith('http') ? sub.bannerImage : `${process.env.REACT_APP_API_URL || "http://localhost:5000"}/${sub.bannerImage}`} 
+                          src={sub.bannerImage.startsWith('http') ? sub.bannerImage : `${process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}/${sub.bannerImage}`} 
                           alt="Current banner" 
                           className="h-20 w-auto rounded border border-border" 
                         />
