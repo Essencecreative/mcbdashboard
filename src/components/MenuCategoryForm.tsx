@@ -23,6 +23,7 @@ export default function MenuCategoryForm() {
     displayName: "",
     position: 1,
     isActive: true,
+    bannerImage: "",
     subcategories: [] as Array<{
       name: string
       displayName: string
@@ -32,6 +33,8 @@ export default function MenuCategoryForm() {
       isActive: boolean
     }>,
   })
+  const [categoryBannerFile, setCategoryBannerFile] = useState<File | null>(null)
+  const [categoryBannerPreview, setCategoryBannerPreview] = useState<string | null>(null)
   const [subcategoryBannerFiles, setSubcategoryBannerFiles] = useState<{ [index: number]: File | null }>({})
   const [subcategoryBannerPreviews, setSubcategoryBannerPreviews] = useState<{ [index: number]: string | null }>({})
   const [errors, setErrors] = useState<string[]>([])
@@ -49,15 +52,25 @@ export default function MenuCategoryForm() {
             displayName: data.displayName || "",
             position: data.position || 1,
             isActive: data.isActive !== undefined ? data.isActive : true,
+            bannerImage: data.bannerImage || "",
             subcategories: (data.subcategories || []).map((sub: any) => ({
               ...sub,
               bannerImage: sub.bannerImage || "",
             })),
           })
           
+          // Set preview for category banner image
+          const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+          if (data.bannerImage) {
+            if (data.bannerImage.startsWith('http')) {
+              setCategoryBannerPreview(data.bannerImage)
+            } else {
+              setCategoryBannerPreview(`${API_BASE}/${data.bannerImage}`)
+            }
+          }
+          
           // Set previews for existing banner images
           const previews: { [index: number]: string | null } = {}
-          const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
           ;(data.subcategories || []).forEach((sub: any, index: number) => {
             if (sub.bannerImage) {
               if (sub.bannerImage.startsWith('http')) {
@@ -86,6 +99,16 @@ export default function MenuCategoryForm() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: name === "position" ? parseInt(value) || 0 : value }))
+  }
+
+  const handleCategoryBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setCategoryBannerFile(file)
+      const reader = new FileReader()
+      reader.onloadend = () => setCategoryBannerPreview(reader.result as string)
+      reader.readAsDataURL(file)
+    }
   }
 
   const handleSubcategoryChange = (index: number, field: string, value: any) => {
@@ -155,6 +178,21 @@ export default function MenuCategoryForm() {
 
     setSubmitting(true)
     try {
+      // Upload category banner image first if any
+      let categoryBannerUrl = formData.bannerImage
+      if (categoryBannerFile) {
+        try {
+          categoryBannerUrl = await uploadSubcategoryBanner(categoryBannerFile)
+        } catch (uploadError) {
+          console.error("Error uploading category banner:", uploadError)
+          toast({
+            title: "Warning",
+            description: `Failed to upload category banner: ${uploadError instanceof Error ? uploadError.message : 'Unknown error'}`,
+            variant: "destructive",
+          })
+        }
+      }
+
       // Upload banner images first if any
       const updatedSubcategories = await Promise.all(
         formData.subcategories.map(async (sub, index) => {
@@ -181,6 +219,7 @@ export default function MenuCategoryForm() {
 
       const finalFormData = {
         ...formData,
+        bannerImage: categoryBannerUrl,
         subcategories: updatedSubcategories,
       }
 
@@ -298,6 +337,36 @@ export default function MenuCategoryForm() {
                 <Label htmlFor="isActive" className="ml-2 cursor-pointer">
                   Active
                 </Label>
+              </div>
+            </div>
+
+            {/* Category Banner Image (for categories without subcategories like Invest) */}
+            <div className="space-y-2">
+              <Label htmlFor="category-banner-upload">Category Banner Image</Label>
+              <p className="text-xs text-muted-foreground">
+                Upload a banner image for categories without subcategories (e.g., Invest)
+              </p>
+              <div className="flex items-center gap-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => document.getElementById("category-banner-upload")?.click()}
+                  disabled={submitting}
+                >
+                  <Upload className="mr-2 h-4 w-4" />
+                  Choose Category Banner
+                </Button>
+                <Input
+                  id="category-banner-upload"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleCategoryBannerChange}
+                  disabled={submitting}
+                />
+                {categoryBannerPreview && (
+                  <img src={categoryBannerPreview} alt="Category banner preview" className="h-20 w-auto rounded" />
+                )}
               </div>
             </div>
 
