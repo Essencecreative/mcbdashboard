@@ -174,6 +174,7 @@ export default function NewsEventsTable() {
   const { token } = useAuth()
   const [searchParams] = useSearchParams()
   const urlCategory = searchParams.get("category")?.trim() || "all"
+  const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
 
   // ----- COMMON STATES -----
   const [searchQuery, setSearchQuery] = useState("")
