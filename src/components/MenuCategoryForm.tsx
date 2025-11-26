@@ -9,7 +9,7 @@ import { Checkbox } from "./ui/checkbox"
 import { Alert, AlertDescription } from "./ui/alert"
 import { AlertCircle, Plus, Trash2, Upload } from "lucide-react"
 import DashboardLayout from "./dashboard-layout"
-import { createMenuCategory, updateMenuCategory, getMenuCategory } from "../lib/api"
+import { createMenuCategory, updateMenuCategory, getMenuCategory, uploadSubcategoryBanner } from "../lib/api"
 import { toast } from "../hooks/use-toast"
 import { useNavigate, useParams } from "react-router"
 
@@ -57,9 +57,9 @@ export default function MenuCategoryForm() {
           
           // Set previews for existing banner images
           const previews: { [index: number]: string | null } = {}
+          const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
           ;(data.subcategories || []).forEach((sub: any, index: number) => {
             if (sub.bannerImage) {
-              const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
               if (sub.bannerImage.startsWith('http')) {
                 previews[index] = sub.bannerImage
               } else {
@@ -159,33 +159,11 @@ export default function MenuCategoryForm() {
       const updatedSubcategories = await Promise.all(
         formData.subcategories.map(async (sub, index) => {
           if (subcategoryBannerFiles[index]) {
-            // Upload the banner image using menu-items upload endpoint (reusing existing infrastructure)
-            const bannerFormData = new FormData()
-            bannerFormData.append("bannerImage", subcategoryBannerFiles[index]!)
-            
-            const token = localStorage.getItem("token")
-            const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
-            
             try {
-              // Upload banner image using menu-categories upload endpoint
-              const uploadRes = await fetch(`${API_BASE}/menu-categories/upload-banner`, {
-                method: "POST",
-                headers: {
-                  Authorization: token ? `Bearer ${token}` : "",
-                },
-                body: bannerFormData,
-              })
-              
-              if (uploadRes.ok) {
-                const uploadData = await uploadRes.json()
-                // Extract the banner image URL from response
-                const bannerUrl = uploadData.bannerImage || uploadData.url
-                if (bannerUrl) {
-                  return { ...sub, bannerImage: bannerUrl }
-                }
-              } else {
-                const errorData = await uploadRes.json().catch(() => ({}))
-                throw new Error(errorData.message || "Failed to upload banner image")
+              // Upload banner image using the API function
+              const bannerUrl = await uploadSubcategoryBanner(subcategoryBannerFiles[index]!)
+              if (bannerUrl) {
+                return { ...sub, bannerImage: bannerUrl }
               }
             } catch (uploadError) {
               console.error("Error uploading banner:", uploadError)
@@ -422,7 +400,7 @@ export default function MenuCategoryForm() {
                       )}
                       {sub.bannerImage && !subcategoryBannerPreviews[index] && (
                         <img 
-                          src={sub.bannerImage.startsWith('http') ? sub.bannerImage : `${process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}/${sub.bannerImage}`} 
+                          src={sub.bannerImage.startsWith('http') ? sub.bannerImage : `${process.env.REACT_APP_API_URL || "http://localhost:5000"}/${sub.bannerImage}`} 
                           alt="Current banner" 
                           className="h-20 w-auto rounded border border-border" 
                         />

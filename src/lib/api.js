@@ -1,5 +1,5 @@
 // src/api.js
-const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz";
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 export const createProduct = async (formData) => {
   const token = localStorage.getItem("token"); // if you use JWT
@@ -613,6 +613,28 @@ export const deleteMenuCategory = async (id) => {
   });
 
   if (!res.ok) throw new Error("Failed to delete menu category");
+};
+
+export const uploadSubcategoryBanner = async (bannerFile) => {
+  const token = localStorage.getItem("token");
+  const formData = new FormData();
+  formData.append("bannerImage", bannerFile);
+
+  const res = await fetch(`${API_BASE}/menu-categories/upload-banner`, {
+    method: "POST",
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || "Failed to upload banner image");
+  }
+
+  const data = await res.json();
+  return data.bannerImage || data.url;
 };
 
 // Menu Items API
