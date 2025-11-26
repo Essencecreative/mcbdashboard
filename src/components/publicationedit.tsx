@@ -68,7 +68,8 @@ export default function EditPublicationPage() {
   useEffect(() => {
     const fetchPublication = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/publications/${id}`, {
+        const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+        const res = await fetch(`${API_BASE}/publications/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -136,7 +137,8 @@ export default function EditPublicationPage() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/publications/${id}`, {
+      const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+      const response = await fetch(`${API_BASE}/publications/${id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

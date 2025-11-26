@@ -53,7 +53,7 @@ export default function CarouselEdit() {
         if (carousel.image) {
           const imageUrl = carousel.image.startsWith('http') 
             ? carousel.image 
-            : `http://localhost:5000/${carousel.image}`
+            : `${process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}/${carousel.image}`
           setCurrentImageUrl(imageUrl)
         }
       } catch (err: any) {

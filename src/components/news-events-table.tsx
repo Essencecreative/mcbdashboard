@@ -77,7 +77,8 @@ const GalleryUploader = ({
     files.forEach(f => form.append("photos", f))
 
     try {
-      const res = await fetch("http://localhost:5000/gallery", {
+      const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+      const res = await fetch(`${API_BASE}/gallery`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: form,
@@ -195,7 +196,7 @@ export default function NewsEventsTable() {
       // 1. Normal publications (always fetch, we filter later)
       try {
         const res = await fetch(
-          `http://localhost:5000/news?page=${currentPage}&limit=${itemsPerPage}`,
+          `${API_BASE}/news?page=${currentPage}&limit=${itemsPerPage}`,
           { headers: { Authorization: `Bearer ${token}` } }
         )
         const data = await res.json()
@@ -207,7 +208,7 @@ export default function NewsEventsTable() {
       if (selectedCategory === "Photo Gallery") {
         try {
           const res = await fetch(
-            `http://localhost:5000/gallery?page=${currentPage}&limit=${itemsPerPage}`
+            `${API_BASE}/gallery?page=${currentPage}&limit=${itemsPerPage}`
           )
           const data = await res.json()
           setGalleryItems(data.galleries || [])
@@ -245,9 +246,10 @@ export default function NewsEventsTable() {
 
   const handleDelete = async (id: string, isGallery: boolean) => {
     setDeleting(true)
+    const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
     const endpoint = isGallery
-      ? `http://localhost:5000/gallery/${id}`
-      : `http://localhost:5000/news/${id}`
+      ? `${API_BASE}/gallery/${id}`
+      : `${API_BASE}/news/${id}`
 
     try {
       const res = await fetch(endpoint, {

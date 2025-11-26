@@ -249,7 +249,7 @@ export default function InvestorCategoryList() {
                             onClick={() => {
                               const pdfUrl = item.pdfUrl?.startsWith('http') 
                                 ? item.pdfUrl 
-                                : `http://localhost:5000/${item.pdfUrl}`
+                                : `${process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}/${item.pdfUrl}`
                               window.open(pdfUrl, "_blank")
                             }}
                           >

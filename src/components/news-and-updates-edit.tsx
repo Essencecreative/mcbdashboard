@@ -64,7 +64,7 @@ export default function NewsAndUpdateEdit() {
         if (newsAndUpdate.image) {
           const imageUrl = newsAndUpdate.image.startsWith('http') 
             ? newsAndUpdate.image 
-            : `http://localhost:5000/${newsAndUpdate.image}`
+            : `${process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}/${newsAndUpdate.image}`
           setCurrentImageUrl(imageUrl)
           setImagePreview(imageUrl)
         }
@@ -73,7 +73,7 @@ export default function NewsAndUpdateEdit() {
         if (newsAndUpdate.bannerPhoto) {
           const bannerPhotoUrl = newsAndUpdate.bannerPhoto.startsWith('http') 
             ? newsAndUpdate.bannerPhoto 
-            : `http://localhost:5000/${newsAndUpdate.bannerPhoto}`
+            : `${process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}/${newsAndUpdate.bannerPhoto}`
           setCurrentBannerPhotoUrl(bannerPhotoUrl)
           setBannerPhotoPreview(bannerPhotoUrl)
         }

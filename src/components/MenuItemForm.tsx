@@ -90,7 +90,7 @@ export default function MenuItemForm() {
             additionalContent: pageContent.additionalContent || "",
           })
           if (pageContent.bannerImage && !pageContent.bannerImage.startsWith('http')) {
-            setBannerPreview(`http://localhost:5000/${pageContent.bannerImage}`)
+            setBannerPreview(`${process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}/${pageContent.bannerImage}`)
           } else if (pageContent.bannerImage) {
             setBannerPreview(pageContent.bannerImage)
           }

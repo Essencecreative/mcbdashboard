@@ -68,7 +68,8 @@ export default function PublicationsTable() {
     const fetchPublications = async () => {
       setLoading(true)
       try {
-        const res = await fetch(`http://localhost:5000/publications?page=${currentPage}&limit=${itemsPerPage}`, {
+        const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+        const res = await fetch(`${API_BASE}/publications?page=${currentPage}&limit=${itemsPerPage}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -283,7 +284,8 @@ export default function PublicationsTable() {
                                     onClick={async () => {
                                       setDeleting(true)
                                       try {
-                                        const res = await fetch(`http://localhost:5000/publications/${publication._id}`, {
+                                        const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+                                        const res = await fetch(`${API_BASE}/publications/${publication._id}`, {
                                           method: "DELETE",
                                           headers: {
                                             Authorization: `Bearer ${token}`,

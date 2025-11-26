@@ -25,7 +25,8 @@ export default function EditOpportunityPage() {
       try {
         setLoading(true)
         const token = localStorage.getItem("token")
-        const res = await fetch(`http://localhost:5000/opportunities/${id}`, {
+        const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+        const res = await fetch(`${API_BASE}/opportunities/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -72,7 +73,8 @@ export default function EditOpportunityPage() {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/opportunities/${id}`, {
+      const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+      const res = await fetch(`${API_BASE}/opportunities/${id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

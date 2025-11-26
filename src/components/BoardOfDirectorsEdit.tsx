@@ -44,7 +44,7 @@ export default function BoardOfDirectorsEdit() {
         if (member.photo) {
           const imageUrl = member.photo.startsWith('http') 
             ? member.photo 
-            : `http://localhost:5000/${member.photo}`
+            : `${process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}/${member.photo}`
           setCurrentImageUrl(imageUrl)
         }
       } catch (err: any) {

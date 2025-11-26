@@ -186,7 +186,7 @@ export default function WaysToBankList() {
                       <TableCell>
                         <div className="w-12 h-12 rounded overflow-hidden border">
                           <img
-                            src={item.image?.startsWith('http') ? item.image : `http://localhost:5000/${item.image}`}
+                            src={item.image?.startsWith('http') ? item.image : `${process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}/${item.image}`}
                             alt={item.title}
                             className="w-full h-full object-cover"
                             onError={(e) => {

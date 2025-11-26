@@ -194,7 +194,7 @@ export default function NewsList() {
                       <TableCell>
                         <div className="w-12 h-12 rounded overflow-hidden border">
                           <img
-                            src={item.image?.startsWith('http') ? item.image : `http://localhost:5000/${item.image}`}
+                            src={item.image?.startsWith('http') ? item.image : `${process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}/${item.image}`}
                             alt={item.title}
                             className="w-full h-full object-cover"
                             onError={(e) => {
@@ -335,7 +335,7 @@ export default function NewsList() {
                 {viewItem?.image && (
                   <div className="w-full h-48 rounded-lg overflow-hidden border">
                     <img
-                      src={viewItem.image?.startsWith('http') ? viewItem.image : `http://localhost:5000/${viewItem.image}`}
+                      src={viewItem.image?.startsWith('http') ? viewItem.image : `${process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}/${viewItem.image}`}
                       alt={viewItem.title}
                       className="w-full h-full object-cover"
                       onError={(e) => {

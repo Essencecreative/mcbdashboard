@@ -78,7 +78,7 @@ export default function WaysToBankEdit() {
         if (product.image) {
           const imageUrl = product.image.startsWith('http') 
             ? product.image 
-            : `http://localhost:5000/${product.image}`;
+            : `${process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}/${product.image}`;
           setCurrentImageUrl(imageUrl);
           setImagePreview(imageUrl);
         }

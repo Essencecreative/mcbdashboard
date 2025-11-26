@@ -67,7 +67,8 @@ export default function NewPublicationPage() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/publications", {
+      const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+      const response = await fetch(`${API_BASE}/publications`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

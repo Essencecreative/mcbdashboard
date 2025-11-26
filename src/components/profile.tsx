@@ -35,7 +35,8 @@ export default function ProfileSettingsPage() {
       if (!user?.id || !token) return
 
       try {
-        const res = await fetch(`http://localhost:5000/users/${user.id}`, {
+        const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+        const res = await fetch(`${API_BASE}/users/${user.id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -89,7 +90,8 @@ export default function ProfileSettingsPage() {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/users/${user?.id}`, {
+      const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+      const res = await fetch(`${API_BASE}/users/${user?.id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

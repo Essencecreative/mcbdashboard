@@ -167,7 +167,7 @@ export default function BoardOfDirectorsList() {
                       <TableCell>
                         <div className="w-12 h-12 rounded overflow-hidden border">
                           <img
-                            src={member.photo?.startsWith('http') ? member.photo : `http://localhost:5000/${member.photo}`}
+                            src={member.photo?.startsWith('http') ? member.photo : `${process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}/${member.photo}`}
                             alt={member.fullName}
                             className="w-full h-full object-cover"
                             onError={(e) => {

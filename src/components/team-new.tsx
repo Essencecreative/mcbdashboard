@@ -61,7 +61,8 @@ export default function NewTeamMemberPage() {
       Object.entries(formData).forEach(([key, value]) => payload.append(key, value))
       if (photoFile) payload.append("photo", photoFile)
 
-      const res = await fetch("http://localhost:5000/team/create-team-member", {
+      const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+      const res = await fetch(`${API_BASE}/team/create-team-member`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -59,7 +59,8 @@ export default function TeamMembersTable() {
     const fetchTeam = async () => {
       setLoading(true)
       try {
-        const response = await fetch("http://localhost:5000/team", {
+        const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+        const response = await fetch(`${API_BASE}/team`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -87,7 +88,8 @@ export default function TeamMembersTable() {
     if (!memberToDelete) return
 
     try {
-      const response = await fetch(`http://localhost:5000/team/${memberToDelete}`, {
+      const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+      const response = await fetch(`${API_BASE}/team/${memberToDelete}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

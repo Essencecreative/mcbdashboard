@@ -102,7 +102,7 @@ export default function InvestorCategoryForm() {
         if (item.pdfUrl) {
           const pdfUrl = item.pdfUrl.startsWith('http') 
             ? item.pdfUrl 
-            : `http://localhost:5000/${item.pdfUrl}`
+            : `${process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}/${item.pdfUrl}`
           setCurrentPdfUrl(pdfUrl)
         }
       } catch (err: any) {

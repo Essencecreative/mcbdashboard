@@ -34,7 +34,8 @@ export default function EditTeamMemberPage() {
   useEffect(() => {
     const fetchTeamMember = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/team/${id}`, {
+        const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+        const res = await fetch(`${API_BASE}/team/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -96,7 +97,8 @@ export default function EditTeamMemberPage() {
       Object.entries(formData).forEach(([key, value]) => payload.append(key, value))
       if (photoFile) payload.append("photo", photoFile)
 
-      const res = await fetch(`http://localhost:5000/team/${id}`, {
+      const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+      const res = await fetch(`${API_BASE}/team/${id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

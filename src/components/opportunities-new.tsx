@@ -30,7 +30,8 @@ export default function NewOpportunityPage() {
     }
   
     try {
-      const res = await fetch("http://localhost:5000/opportunities", {
+      const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+      const res = await fetch(`${API_BASE}/opportunities`, {
         method: "POST",
         body: formData,
       })

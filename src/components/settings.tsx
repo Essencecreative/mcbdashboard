@@ -321,7 +321,7 @@ export default function SettingsPage() {
                 <Input
                   value={apiUrl}
                   onChange={(e) => setApiUrl(e.target.value)}
-                  placeholder="http://localhost:5000"
+                  placeholder="https://service.mwalimubank.co.tz"
                 />
                 <p className="text-xs text-muted-foreground">
                   Current: {process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}

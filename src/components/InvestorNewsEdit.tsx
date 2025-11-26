@@ -62,7 +62,7 @@ export default function InvestorNewsEdit() {
         if (investorNews.image) {
           const imageUrl = investorNews.image.startsWith('http') 
             ? investorNews.image 
-            : `http://localhost:5000/${investorNews.image}`
+            : `${process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}/${investorNews.image}`
           setCurrentImageUrl(imageUrl)
           setImagePreview(imageUrl)
         }
@@ -71,7 +71,7 @@ export default function InvestorNewsEdit() {
         if (investorNews.bannerPhoto) {
           const bannerPhotoUrl = investorNews.bannerPhoto.startsWith('http') 
             ? investorNews.bannerPhoto 
-            : `http://localhost:5000/${investorNews.bannerPhoto}`
+            : `${process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"}/${investorNews.bannerPhoto}`
           setCurrentBannerPhotoUrl(bannerPhotoUrl)
           setBannerPhotoPreview(bannerPhotoUrl)
         }

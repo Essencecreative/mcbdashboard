@@ -63,7 +63,8 @@ export default function OpportunitiesTable() {
   useEffect(() => {
     const fetchOpportunities = async () => {
       try {
-        const res = await fetch("http://localhost:5000/opportunities", {
+        const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+        const res = await fetch(`${API_BASE}/opportunities`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -121,7 +122,8 @@ export default function OpportunitiesTable() {
     if (deleteId) {
       setDeleting(true)
       try {
-        const res = await fetch(`http://localhost:5000/opportunities/${deleteId}`, {
+        const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+        const res = await fetch(`${API_BASE}/opportunities/${deleteId}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,

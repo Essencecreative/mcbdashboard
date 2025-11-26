@@ -46,7 +46,8 @@ export default function EditNewsEventPage() {
 
     const fetchNewsEvent = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/news/${id}`, {
+        const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+        const res = await fetch(`${API_BASE}/news/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
 
@@ -104,7 +105,8 @@ export default function EditNewsEventPage() {
     if (photo) formData.append("photo", photo)
 
     try {
-      const response = await fetch(`http://localhost:5000/news/${id}`, {
+      const API_BASE = process.env.REACT_APP_API_URL || "https://service.mwalimubank.co.tz"
+      const response = await fetch(`${API_BASE}/news/${id}`, {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
