@@ -638,20 +638,37 @@ export const createMenuItem = async (formData) => {
 
 export const getMenuItems = async (menuCategory, subcategory, route) => {
   const token = localStorage.getItem("token");
-  
-  let url = `${API_BASE}/menu-items/all`;
-  if (menuCategory) url += `?menuCategory=${menuCategory}`;
-  if (subcategory) url += `&subcategory=${encodeURIComponent(subcategory)}`;
-  if (route) url += `&route=${encodeURIComponent(route)}`;
-  
-  const res = await fetch(url, {
-    headers: {
-      Authorization: token ? `Bearer ${token}` : "",
-    },
-  });
-  if (!res.ok) throw new Error("Failed to fetch menu items");
-  const data = await res.json();
-  return data.items || [];
+
+  const baseParams = new URLSearchParams();
+  if (menuCategory) baseParams.set("menuCategory", menuCategory);
+  if (subcategory) baseParams.set("subcategory", subcategory);
+  if (route) baseParams.set("route", route);
+
+  const allItems = [];
+  const pageSize = 100;
+  let currentPage = 1;
+  let totalPages = 1;
+
+  do {
+    const params = new URLSearchParams(baseParams);
+    params.set("page", String(currentPage));
+    params.set("limit", String(pageSize));
+
+    const res = await fetch(`${API_BASE}/menu-items/all?${params.toString()}`, {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    });
+
+    if (!res.ok) throw new Error("Failed to fetch menu items");
+
+    const data = await res.json();
+    allItems.push(...(data.items || []));
+    totalPages = Number(data.totalPages) || 1;
+    currentPage += 1;
+  } while (currentPage <= totalPages);
+
+  return allItems;
 };
 
 export const getMenuItem = async (id) => {
