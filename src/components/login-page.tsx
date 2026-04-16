@@ -8,6 +8,7 @@ import { Input } from "./ui/input"
 import { Button } from "./ui/button"
 import { useAuth } from "../auth-context"
 import { useNavigate } from "react-router"
+import { API_BASE } from "../lib/api"
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -26,7 +27,7 @@ export default function LoginPage() {
     e.preventDefault()
   
     try {
-      const response = await fetch("http://66.29.133.39:5000/users/login", {
+      const response = await fetch(`${API_BASE}/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

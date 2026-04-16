@@ -8,7 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from "./ui/alert"
 import { AlertCircle, Upload, Loader2 } from "lucide-react"
 import DashboardLayout from "./dashboard-layout"
 import { RichTextEditor } from "./ui/editor"
-import { getInvestorNewsItem, updateInvestorNews } from "../lib/api"
+import { getInvestorNewsItem, updateInvestorNews, API_BASE } from "../lib/api"
 import { toast } from "../hooks/use-toast"
 
 export default function InvestorNewsEdit() {
@@ -54,7 +54,7 @@ export default function InvestorNewsEdit() {
         if (investorNews.image) {
           const imageUrl = investorNews.image.startsWith('http') 
             ? investorNews.image 
-            : `http://localhost:5000/${investorNews.image}`
+            : `${API_BASE}/${investorNews.image}`
           setCurrentImageUrl(imageUrl)
           setImagePreview(imageUrl)
         }

@@ -27,7 +27,7 @@ import { Edit, Trash2, Plus, ExternalLink, Image as ImageIcon, Loader2 } from "l
 import DashboardLayout from "./dashboard-layout"
 import { toast } from "../hooks/use-toast"
 import { useNavigate, useLocation } from "react-router"
-import { getInvestorCategories, deleteInvestorCategory } from "../lib/api"
+import { getInvestorCategories, deleteInvestorCategory, API_BASE } from "../lib/api"
 
 // Types
 interface InvestorItem {
@@ -50,9 +50,9 @@ const categoryMap: Record<string, { title: string; subtitle: string }> = {
     title: "Annual General Meeting",
     subtitle: "Manage AGM documents and information",
   },
-  "financial-reports": {
-    title: "Financial Reports",
-    subtitle: "Manage financial statements and reports",
+  reports: {
+    title: "Reports",
+    subtitle: "Manage financial statements, annual reports, and disclosures",
   },
   "tariff-guide": {
     title: "Tariff Guide",
@@ -83,9 +83,10 @@ export default function InvestorCategoryList() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Get current category from URL
+  // Get current category and type from URL
   const params = new URLSearchParams(location.search)
-  const currentCategory = params.get("category") || categories[0]
+  const currentCategory = params.get("category") || "reports"
+  const currentType = params.get("type") || ""
 
   // Fetch items from API
   useEffect(() => {
@@ -93,7 +94,7 @@ export default function InvestorCategoryList() {
       try {
         setLoading(true)
         setError(null)
-        const response = await getInvestorCategories(currentCategory, 1, 100) // Fetch all (adjust limit as needed)
+        const response = await getInvestorCategories(currentCategory, 1, 100, currentType) // Fetch all with type filter
         const fetchedItems = response.items || []
         // Map to add id for compatibility
         const mappedItems = fetchedItems.map((item: any) => ({
@@ -115,7 +116,7 @@ export default function InvestorCategoryList() {
     }
 
     fetchItems()
-  }, [currentCategory])
+  }, [currentCategory, currentType])
 
   // Category change handler (update URL)
   const handleCategoryChange = (value: string) => {
@@ -248,7 +249,7 @@ export default function InvestorCategoryList() {
                             onClick={() => {
                               const pdfUrl = item.pdfUrl?.startsWith('http') 
                                 ? item.pdfUrl 
-                                : `http://localhost:5000/${item.pdfUrl}`
+                                : `${API_BASE}/${item.pdfUrl}`
                               window.open(pdfUrl, "_blank")
                             }}
                           >

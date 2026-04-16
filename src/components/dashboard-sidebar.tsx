@@ -179,8 +179,21 @@ export default function DashboardSidebar() {
                       </Link>
                     </SidebarMenuSubItem>
                     <SidebarMenuSubItem>
-                      <Link to="/investors?category=financial-reports">
+                      <div className="px-2 py-1 text-[10px] font-semibold text-white/50 uppercase tracking-wider mt-2">Reports</div>
+                    </SidebarMenuSubItem>
+                    <SidebarMenuSubItem>
+                      <Link to="/investors?category=reports&type=Financial Report">
                         <TruncatedMenuItem text="Financial Reports" />
+                      </Link>
+                    </SidebarMenuSubItem>
+                    <SidebarMenuSubItem>
+                      <Link to="/investors?category=reports&type=Annual Report">
+                        <TruncatedMenuItem text="Annual Reports" />
+                      </Link>
+                    </SidebarMenuSubItem>
+                    <SidebarMenuSubItem>
+                      <Link to="/investors?category=reports&type=Market Disclosure">
+                        <TruncatedMenuItem text="Market Disclosures" />
                       </Link>
                     </SidebarMenuSubItem>
                     <SidebarMenuSubItem>

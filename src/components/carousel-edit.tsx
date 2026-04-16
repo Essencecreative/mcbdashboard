@@ -8,7 +8,7 @@ import { Textarea } from "./ui/textarea"
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert"
 import { AlertCircle, Upload, Loader2 } from "lucide-react"
 import DashboardLayout from "./dashboard-layout"
-import { getCarousel, updateCarousel } from "../lib/api"
+import { getCarousel, updateCarousel, API_BASE } from "../lib/api"
 import { toast } from "../hooks/use-toast"
 import { useNavigate, useParams } from "react-router"
 
@@ -51,7 +51,7 @@ export default function CarouselEdit() {
         if (carousel.image) {
           const imageUrl = carousel.image.startsWith('http') 
             ? carousel.image 
-            : `http://localhost:5000/${carousel.image}`
+            : `${API_BASE}/${carousel.image}`
           setCurrentImageUrl(imageUrl)
         }
       } catch (err: any) {

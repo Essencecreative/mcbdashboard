@@ -7,7 +7,7 @@ import { Textarea } from "./ui/textarea"
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert"
 import { AlertCircle, Upload, Loader2 } from "lucide-react"
 import DashboardLayout from "./dashboard-layout"
-import { createInvestorCategory, getInvestorCategory, updateInvestorCategory } from "../lib/api"
+import { createInvestorCategory, getInvestorCategory, updateInvestorCategory, API_BASE } from "../lib/api"
 import { toast } from "../hooks/use-toast"
 import {
   Select,
@@ -20,11 +20,17 @@ import {
 // Available categories (excluding investor-news)
 const categories = [
   { value: "agm", label: "Annual General Meeting" },
-  { value: "financial-reports", label: "Financial Reports" },
+  { value: "reports", label: "Reports" },
   { value: "tariff-guide", label: "Tariff Guide" },
   { value: "shareholding", label: "Shareholding Structure" },
   { value: "share-price", label: "Share Price" },
   { value: "contact", label: "Investor Relations Contact" },
+]
+
+const reportTypes = [
+  "Financial Report",
+  "Annual Report",
+  "Market Disclosure"
 ]
 
 // Category mapping for titles
@@ -33,9 +39,9 @@ const categoryMap: Record<string, { title: string; subtitle: string }> = {
     title: "Annual General Meeting",
     subtitle: "Manage AGM documents and information",
   },
-  "financial-reports": {
-    title: "Financial Reports",
-    subtitle: "Manage financial statements and reports",
+  reports: {
+    title: "Reports",
+    subtitle: "Manage financial statements, annual reports, and disclosures",
   },
   "tariff-guide": {
     title: "Tariff Guide",
@@ -61,6 +67,7 @@ export default function InvestorCategoryForm() {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     category: category || "",
+    type: "",
     title: "",
     description: "",
     pdfUrl: "",
@@ -94,6 +101,7 @@ export default function InvestorCategoryForm() {
         
         setFormData({
           category: item.category || category || "",
+          type: item.type || "",
           title: item.title || "",
           description: item.description || "",
           pdfUrl: item.pdfUrl || "",
@@ -102,7 +110,7 @@ export default function InvestorCategoryForm() {
         if (item.pdfUrl) {
           const pdfUrl = item.pdfUrl.startsWith('http') 
             ? item.pdfUrl 
-            : `http://localhost:5000/${item.pdfUrl}`
+            : `${API_BASE}/${item.pdfUrl}`
           setCurrentPdfUrl(pdfUrl)
         }
       } catch (err: any) {
@@ -158,6 +166,9 @@ export default function InvestorCategoryForm() {
     setSubmitting(true)
     const data = new FormData()
     data.append("category", formData.category)
+    if (formData.category === "reports" && formData.type) {
+        data.append("type", formData.type)
+    }
     data.append("title", formData.title)
     data.append("description", formData.description)
     if (pdfFile) {
@@ -258,6 +269,29 @@ export default function InvestorCategoryForm() {
                 </p>
               )}
             </div>
+
+            {/* Sub-type Select for Reports */}
+            {formData.category === "reports" && (
+              <div className="space-y-2">
+                <Label htmlFor="type" className="text-base font-medium">Report Type</Label>
+                <Select
+                  value={formData.type}
+                  onValueChange={(value) => setFormData(prev => ({ ...prev, type: value }))}
+                  disabled={submitting}
+                >
+                  <SelectTrigger id="type" className="w-full">
+                    <SelectValue placeholder="Select report type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {reportTypes.map((type) => (
+                      <SelectItem key={type} value={type}>
+                        {type}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
 
             {/* Title */}
             <div className="space-y-2">

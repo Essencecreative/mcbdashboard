@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { SaveIcon, UploadIcon } from "lucide-react"
 import { useToast } from "../hooks/use-toast"
 import { useAuth } from "../auth-context"
+import { API_BASE } from "../lib/api"
 
 export default function NewUserPage() {
   const { token } = useAuth()
@@ -59,7 +60,7 @@ export default function NewUserPage() {
       Object.entries(formData).forEach(([key, value]) => payload.append(key, value))
       if (photoFile) payload.append("photo", photoFile)
 
-      const res = await fetch("http://localhost:5000/users/create-team-member", {
+      const res = await fetch(`${API_BASE}/users/create-team-member`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

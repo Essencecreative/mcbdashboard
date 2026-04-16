@@ -23,6 +23,7 @@ import { Badge } from "./ui/badge"
 import { Skeleton } from "./ui/skeleton"
 import { useAuth } from "../auth-context"
 import { useToast } from "../hooks/use-toast"
+import { API_BASE } from "../lib/api"
 import {
   Dialog,
   DialogTrigger,
@@ -68,7 +69,7 @@ export default function PublicationsTable() {
     const fetchPublications = async () => {
       setLoading(true)
       try {
-        const res = await fetch(`http://localhost:5000/publications?page=${currentPage}&limit=${itemsPerPage}`, {
+        const res = await fetch(`${API_BASE}/publications?page=${currentPage}&limit=${itemsPerPage}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -283,7 +284,7 @@ export default function PublicationsTable() {
                                     onClick={async () => {
                                       setDeleting(true)
                                       try {
-                                        const res = await fetch(`http://localhost:5000/publications/${publication._id}`, {
+                                        const res = await fetch(`${API_BASE}/publications/${publication._id}`, {
                                           method: "DELETE",
                                           headers: {
                                             Authorization: `Bearer ${token}`,

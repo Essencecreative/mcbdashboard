@@ -9,7 +9,7 @@ import { Textarea } from "./ui/textarea";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { AlertCircle, Upload, Plus, X, Loader2 } from "lucide-react";
 import DashboardLayout from "./dashboard-layout";
-import { getProduct, updateProduct } from "../lib/api";
+import { getProduct, updateProduct, API_BASE } from "../lib/api";
 import { toast } from "../hooks/use-toast";
 
 interface Feature {
@@ -76,7 +76,7 @@ export default function WaysToBankEdit() {
         if (product.image) {
           const imageUrl = product.image.startsWith('http') 
             ? product.image 
-            : `http://localhost:5000/${product.image}`;
+            : `${API_BASE}/${product.image}`;
           setCurrentImageUrl(imageUrl);
           setImagePreview(imageUrl);
         }

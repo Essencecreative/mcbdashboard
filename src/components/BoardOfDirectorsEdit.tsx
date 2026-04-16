@@ -7,7 +7,7 @@ import { Label } from "./ui/label"
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert"
 import { AlertCircle, Upload, Loader2 } from "lucide-react"
 import DashboardLayout from "./dashboard-layout"
-import { getBoardMember, updateBoardMember } from "../lib/api"
+import { getBoardMember, updateBoardMember, API_BASE } from "../lib/api"
 import { toast } from "../hooks/use-toast"
 import { useNavigate, useParams } from "react-router"
 
@@ -44,7 +44,7 @@ export default function BoardOfDirectorsEdit() {
         if (member.photo) {
           const imageUrl = member.photo.startsWith('http') 
             ? member.photo 
-            : `http://localhost:5000/${member.photo}`
+            : `${API_BASE}/${member.photo}`
           setCurrentImageUrl(imageUrl)
         }
       } catch (err: any) {

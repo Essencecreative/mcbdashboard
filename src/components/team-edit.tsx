@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { SaveIcon, UploadIcon } from "lucide-react"
 import { useToast } from "../hooks/use-toast"
 import { useAuth } from "../auth-context"
+import { API_BASE } from "../lib/api"
 
 export default function EditTeamMemberPage() {
   const { token } = useAuth()
@@ -34,7 +35,7 @@ export default function EditTeamMemberPage() {
   useEffect(() => {
     const fetchTeamMember = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/team/${id}`, {
+        const res = await fetch(`${API_BASE}/team/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -96,7 +97,7 @@ export default function EditTeamMemberPage() {
       Object.entries(formData).forEach(([key, value]) => payload.append(key, value))
       if (photoFile) payload.append("photo", photoFile)
 
-      const res = await fetch(`http://localhost:5000/team/${id}`, {
+      const res = await fetch(`${API_BASE}/team/${id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

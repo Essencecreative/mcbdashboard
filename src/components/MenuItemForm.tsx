@@ -9,7 +9,7 @@ import { Checkbox } from "./ui/checkbox"
 import { Alert, AlertDescription } from "./ui/alert"
 import { AlertCircle, Plus, Trash2, Upload } from "lucide-react"
 import DashboardLayout from "./dashboard-layout"
-import { createMenuItem, updateMenuItem, getMenuItem, getMenuCategories } from "../lib/api"
+import { createMenuItem, updateMenuItem, getMenuItem, getMenuCategories, API_BASE } from "../lib/api"
 import { toast } from "../hooks/use-toast"
 import { useNavigate, useParams } from "react-router"
 import { RichTextEditor } from "./ui/editor"
@@ -87,7 +87,7 @@ export default function MenuItemForm() {
             additionalContent: pageContent.additionalContent || "",
           })
           if (pageContent.bannerImage && !pageContent.bannerImage.startsWith('http')) {
-            setBannerPreview(`http://localhost:5000/${pageContent.bannerImage}`)
+            setBannerPreview(`${API_BASE}/${pageContent.bannerImage}`)
           } else if (pageContent.bannerImage) {
             setBannerPreview(pageContent.bannerImage)
           }

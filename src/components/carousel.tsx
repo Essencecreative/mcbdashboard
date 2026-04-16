@@ -26,7 +26,7 @@ import { Edit, Trash2, Plus, Image as ImageIcon, Loader2 } from "lucide-react"
 import DashboardLayout from "./dashboard-layout"
 import { toast } from "../hooks/use-toast"
 import { useNavigate } from "react-router"
-import { getCarousels, deleteCarousel } from "../lib/api"
+import { getCarousels, deleteCarousel, API_BASE } from "../lib/api"
 
 // Types
 interface CarouselItem {
@@ -167,7 +167,7 @@ export default function CarouselList() {
                       <TableCell>
                         <div className="w-12 h-12 rounded overflow-hidden border">
                           <img
-                            src={item.image?.startsWith('http') ? item.image : `http://localhost:5000/${item.image}`}
+                            src={item.image?.startsWith('http') ? item.image : `${API_BASE}/${item.image}`}
                             alt={item.title}
                             className="w-full h-full object-cover"
                             onError={(e) => {

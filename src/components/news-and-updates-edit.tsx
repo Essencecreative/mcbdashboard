@@ -8,7 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from "./ui/alert"
 import { AlertCircle, Upload, Loader2 } from "lucide-react"
 import DashboardLayout from "./dashboard-layout"
 import { RichTextEditor } from "./ui/editor"
-import { getNewsAndUpdate, updateNewsAndUpdate } from "../lib/api"
+import { getNewsAndUpdate, updateNewsAndUpdate, API_BASE } from "../lib/api"
 import { toast } from "../hooks/use-toast"
 
 export default function NewsAndUpdateEdit() {
@@ -54,7 +54,7 @@ export default function NewsAndUpdateEdit() {
         if (newsAndUpdate.image) {
           const imageUrl = newsAndUpdate.image.startsWith('http') 
             ? newsAndUpdate.image 
-            : `http://localhost:5000/${newsAndUpdate.image}`
+            : `${API_BASE}/${newsAndUpdate.image}`
           setCurrentImageUrl(imageUrl)
           setImagePreview(imageUrl)
         }
