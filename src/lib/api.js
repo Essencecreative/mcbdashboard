@@ -219,10 +219,15 @@ export const createInvestorCategory = async (formData) => {
   return data.item;
 };
 
-export const getInvestorCategories = async (category, page = 1, limit = 10) => {
-  const url = category 
+export const getInvestorCategories = async (category, page = 1, limit = 10, type = "") => {
+  let url = category 
     ? `${API_BASE}/investor-categories?category=${category}&page=${page}&limit=${limit}`
     : `${API_BASE}/investor-categories?page=${page}&limit=${limit}`;
+  
+  if (type) {
+    url += `&type=${encodeURIComponent(type)}`;
+  }
+
   const res = await fetch(url);
   if (!res.ok) throw new Error("Failed to fetch investor category items");
   return res.json();

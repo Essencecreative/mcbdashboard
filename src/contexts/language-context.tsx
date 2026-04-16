@@ -56,6 +56,9 @@ const translations: Record<Language, Record<string, string>> = {
     "sidebar.productsCarousel": "Products Carousel",
     "sidebar.annualGeneralMeeting": "Annual General Meeting",
     "sidebar.financialReports": "Financial Reports",
+    "sidebar.reports": "Reports",
+    "sidebar.marketDisclosures": "Market Disclosures",
+    "sidebar.annualReports": "Annual Reports",
     "sidebar.tariffGuide": "Tariff Guide",
     "sidebar.shareholdingStructure": "Shareholding Structure",
     "sidebar.sharePrice": "Share Price",
@@ -254,6 +257,10 @@ const translations: Record<Language, Record<string, string>> = {
     "investors.categoryName": "Category Name",
     "investors.addCategory": "Add Investor Category",
     "investors.editCategory": "Edit Investor Category",
+    "investors.reportType": "Report Type",
+    "investors.financialReport": "Financial Report",
+    "investors.annualReport": "Annual Report",
+    "investors.marketDisclosure": "Market Disclosure",
     
     // Opportunities
     "opportunities.title": "Opportunities",
@@ -453,6 +460,9 @@ const translations: Record<Language, Record<string, string>> = {
     "sidebar.productsCarousel": "Carousel ya Bidhaa",
     "sidebar.annualGeneralMeeting": "Mkutano Mkuu wa Mwaka",
     "sidebar.financialReports": "Ripoti za Kifedha",
+    "sidebar.reports": "Ripoti",
+    "sidebar.marketDisclosures": "Ufunuo wa Soko",
+    "sidebar.annualReports": "Ripoti za Mwaka",
     "sidebar.tariffGuide": "Mwongozo wa Ada",
     "sidebar.shareholdingStructure": "Muundo wa Umiliki wa Hisa",
     "sidebar.sharePrice": "Bei ya Hisa",
@@ -648,6 +658,10 @@ const translations: Record<Language, Record<string, string>> = {
     "investors.categoryName": "Jina la Jamii",
     "investors.addCategory": "Ongeza Jamii ya Wawekezaji",
     "investors.editCategory": "Hariri Jamii ya Wawekezaji",
+    "investors.reportType": "Aina ya Ripoti",
+    "investors.financialReport": "Ripoti ya Kifedha",
+    "investors.annualReport": "Ripoti ya Mwaka",
+    "investors.marketDisclosure": "Ufunuo wa Soko",
     
     // Opportunities
     "opportunities.title": "Fursa",

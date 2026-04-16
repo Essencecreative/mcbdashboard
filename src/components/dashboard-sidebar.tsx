@@ -180,11 +180,38 @@ export default function DashboardSidebar() {
                         <TruncatedMenuItem text={t("sidebar.annualGeneralMeeting")} />
                       </Link>
                     </SidebarMenuSubItem>
-                    <SidebarMenuSubItem>
-                      <Link to="/investors?category=financial-reports">
-                        <TruncatedMenuItem text={t("sidebar.financialReports")} />
-                      </Link>
-                    </SidebarMenuSubItem>
+                    <li className="dropdown">
+                      <SidebarMenuButton 
+                        onClick={() => toggleMenu("reports")}
+                        className="w-full justify-between hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                      >
+                        <div className="flex items-center gap-2">
+                          <BookOpen className="h-4 w-4" />
+                          <TruncatedMenuItem text={t("sidebar.reports")} />
+                        </div>
+                        <ChevronDown className={`h-4 w-4 transition-transform ${isMenuOpen("reports") ? "rotate-180" : ""}`} />
+                      </SidebarMenuButton>
+                      
+                      {isMenuOpen("reports") && (
+                        <SidebarMenuSub>
+                          <SidebarMenuSubItem>
+                            <Link to="/investors?category=reports&type=Financial Report">
+                              <TruncatedMenuItem text={t("sidebar.financialReports")} />
+                            </Link>
+                          </SidebarMenuSubItem>
+                          <SidebarMenuSubItem>
+                            <Link to="/investors?category=reports&type=Annual Report">
+                              <TruncatedMenuItem text={t("sidebar.annualReports")} />
+                            </Link>
+                          </SidebarMenuSubItem>
+                          <SidebarMenuSubItem>
+                            <Link to="/investors?category=reports&type=Market Disclosure">
+                              <TruncatedMenuItem text={t("sidebar.marketDisclosures")} />
+                            </Link>
+                          </SidebarMenuSubItem>
+                        </SidebarMenuSub>
+                      )}
+                    </li>
                     <SidebarMenuSubItem>
                       <Link to="/investors?category=tariff-guide">
                         <TruncatedMenuItem text={t("sidebar.tariffGuide")} />

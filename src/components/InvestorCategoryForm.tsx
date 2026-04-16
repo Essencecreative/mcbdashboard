@@ -20,7 +20,7 @@ import {
 // Available categories (excluding investor-news)
 const categories = [
   { value: "agm", label: "Annual General Meeting" },
-  { value: "financial-reports", label: "Financial Reports" },
+  { value: "reports", label: "Reports" },
   { value: "tariff-guide", label: "Tariff Guide" },
   { value: "shareholding", label: "Shareholding Structure" },
   { value: "share-price", label: "Share Price" },
@@ -33,9 +33,9 @@ const categoryMap: Record<string, { title: string; subtitle: string }> = {
     title: "Annual General Meeting",
     subtitle: "Manage AGM documents and information",
   },
-  "financial-reports": {
-    title: "Financial Reports",
-    subtitle: "Manage financial statements and reports",
+  reports: {
+    title: "Reports",
+    subtitle: "Financial, Annual, and Market Disclosure reports",
   },
   "tariff-guide": {
     title: "Tariff Guide",
@@ -64,6 +64,7 @@ export default function InvestorCategoryForm() {
     title: "",
     description: "",
     pdfUrl: "",
+    type: "",
   })
   const [pdfFile, setPdfFile] = useState<File | null>(null)
   const [currentPdfUrl, setCurrentPdfUrl] = useState<string | null>(null)
@@ -97,6 +98,7 @@ export default function InvestorCategoryForm() {
           title: item.title || "",
           description: item.description || "",
           pdfUrl: item.pdfUrl || "",
+          type: item.type || "",
         })
 
         if (item.pdfUrl) {
@@ -129,7 +131,11 @@ export default function InvestorCategoryForm() {
   }
 
   const handleCategoryChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, category: value }))
+    setFormData((prev) => ({ ...prev, category: value, type: value === 'reports' ? prev.type : '' }))
+  }
+
+  const handleTypeChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, type: value }))
   }
 
   const handlePdfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -160,6 +166,9 @@ export default function InvestorCategoryForm() {
     data.append("category", formData.category)
     data.append("title", formData.title)
     data.append("description", formData.description)
+    if (formData.type) {
+      data.append("type", formData.type)
+    }
     if (pdfFile) {
       data.append("pdf", pdfFile)
     } else if (formData.pdfUrl && !isEdit) {
@@ -258,6 +267,27 @@ export default function InvestorCategoryForm() {
                 </p>
               )}
             </div>
+
+            {/* Report Type Select (Conditional) */}
+            {formData.category === "reports" && (
+              <div className="space-y-2">
+                <Label htmlFor="type" className="text-base font-medium">Report Type</Label>
+                <Select
+                  value={formData.type}
+                  onValueChange={handleTypeChange}
+                  disabled={submitting}
+                >
+                  <SelectTrigger id="type" className="w-full">
+                    <SelectValue placeholder="Select report type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Financial Report">Financial Report</SelectItem>
+                    <SelectItem value="Annual Report">Annual Report</SelectItem>
+                    <SelectItem value="Market Disclosure">Market Disclosure</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
 
             {/* Title */}
             <div className="space-y-2">
