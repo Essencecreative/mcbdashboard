@@ -24,6 +24,7 @@ const categories = [
   { value: "tariff-guide", label: "Tariff Guide" },
   { value: "shareholding", label: "Shareholding Structure" },
   { value: "share-price", label: "Share Price" },
+  { value: "rights-issue", label: "Rights Issue" },
   { value: "contact", label: "Investor Relations Contact" },
 ]
 
@@ -52,6 +53,10 @@ const categoryMap: Record<string, { title: string; subtitle: string }> = {
   contact: {
     title: "Investor Relations Contact",
     subtitle: "Manage contact information for investor relations",
+  },
+  "rights-issue": {
+    title: "Rights Issue",
+    subtitle: "Manage rights issue documents and information",
   },
 }
 

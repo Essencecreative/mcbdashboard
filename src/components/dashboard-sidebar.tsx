@@ -213,6 +213,11 @@ export default function DashboardSidebar() {
                       )}
                     </li>
                     <SidebarMenuSubItem>
+                      <Link to="/investors?category=rights-issue">
+                        <TruncatedMenuItem text={t("sidebar.rightsIssue")} />
+                      </Link>
+                    </SidebarMenuSubItem>
+                    <SidebarMenuSubItem>
                       <Link to="/investors?category=tariff-guide">
                         <TruncatedMenuItem text={t("sidebar.tariffGuide")} />
                       </Link>

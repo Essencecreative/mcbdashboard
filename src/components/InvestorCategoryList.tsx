@@ -70,6 +70,10 @@ const categoryMap: Record<string, { title: string; subtitle: string }> = {
     title: "Investor Relations Contact",
     subtitle: "Manage contact information for investor relations",
   },
+  "rights-issue": {
+    title: "Rights Issue",
+    subtitle: "Manage rights issue documents and information",
+  },
 }
 
 // All categories for select

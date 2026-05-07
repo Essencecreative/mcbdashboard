@@ -57,6 +57,7 @@ const translations: Record<Language, Record<string, string>> = {
     "sidebar.annualGeneralMeeting": "Annual General Meeting",
     "sidebar.financialReports": "Financial Reports",
     "sidebar.reports": "Reports",
+    "sidebar.rightsIssue": "Rights Issue",
     "sidebar.marketDisclosures": "Market Disclosures",
     "sidebar.annualReports": "Annual Reports",
     "sidebar.tariffGuide": "Tariff Guide",
@@ -261,6 +262,7 @@ const translations: Record<Language, Record<string, string>> = {
     "investors.financialReport": "Financial Report",
     "investors.annualReport": "Annual Report",
     "investors.marketDisclosure": "Market Disclosure",
+    "investors.rightsIssue": "Rights Issue",
     
     // Opportunities
     "opportunities.title": "Opportunities",
@@ -461,6 +463,7 @@ const translations: Record<Language, Record<string, string>> = {
     "sidebar.annualGeneralMeeting": "Mkutano Mkuu wa Mwaka",
     "sidebar.financialReports": "Ripoti za Kifedha",
     "sidebar.reports": "Ripoti",
+    "sidebar.rightsIssue": "Toleo la Haki",
     "sidebar.marketDisclosures": "Ufunuo wa Soko",
     "sidebar.annualReports": "Ripoti za Mwaka",
     "sidebar.tariffGuide": "Mwongozo wa Ada",
@@ -662,6 +665,7 @@ const translations: Record<Language, Record<string, string>> = {
     "investors.financialReport": "Ripoti ya Kifedha",
     "investors.annualReport": "Ripoti ya Mwaka",
     "investors.marketDisclosure": "Ufunuo wa Soko",
+    "investors.rightsIssue": "Toleo la Haki",
     
     // Opportunities
     "opportunities.title": "Fursa",
