@@ -8,7 +8,7 @@ import { AlertCircle, Upload, CalendarIcon } from "lucide-react"
 import DashboardLayout from "./dashboard-layout"
 import { RichTextEditor } from "./ui/editor"
 import { useNavigate } from "react-router"
-import { createNewsAndUpdate } from "../lib/api"
+import { createNewsAndUpdate, uploadNewsContentImage } from "../lib/api"
 import { toast } from "../hooks/use-toast"
 import { useLanguage } from "../contexts/language-context"
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
@@ -47,6 +47,11 @@ export default function NewsNewForm() {
     setFormData((prev) => ({ ...prev, content }))
   }
 
+  const hasEditorContent = (content: string) => {
+    const text = content.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim()
+    return Boolean(text || /<img\s/i.test(content))
+  }
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
@@ -78,7 +83,7 @@ export default function NewsNewForm() {
     if (formData.shortDescription.length > MAX_DESC_CHARS)
       newErrors.push(`Short description: max ${MAX_DESC_CHARS} characters`)
 
-    if (!formData.content.trim()) newErrors.push("News content is required")
+    if (!hasEditorContent(formData.content)) newErrors.push("News content is required")
     if (!image) newErrors.push("Image is required")
 
     setErrors(newErrors)
@@ -287,6 +292,8 @@ export default function NewsNewForm() {
                 <RichTextEditor
                   value={formData.content}
                   onChange={handleEditorChange}
+                  uploadImage={uploadNewsContentImage}
+                  disabled={submitting}
                   placeholder="Write your news & update content here..."
                 />
               </div>

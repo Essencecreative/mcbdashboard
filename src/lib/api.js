@@ -87,6 +87,28 @@ export const createNewsAndUpdate = async (formData) => {
   return data.newsAndUpdate;
 };
 
+export const uploadNewsContentImage = async (file) => {
+  const token = localStorage.getItem("token");
+  const formData = new FormData();
+  formData.append("image", file);
+
+  const res = await fetch(`${API_BASE}/news-and-updates/content-image`, {
+    method: "POST",
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || "Failed to upload content image");
+  }
+
+  const data = await res.json();
+  return data.url;
+};
+
 export const getNewsAndUpdates = async (page = 1, limit = 10) => {
   const res = await fetch(`${API_BASE}/news-and-updates?page=${page}&limit=${limit}`);
   if (!res.ok) throw new Error("Failed to fetch news & updates");
