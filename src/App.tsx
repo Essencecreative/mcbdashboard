@@ -54,6 +54,9 @@ import WakalaEdit from './components/WakalaEdit';
 import FAQList from './components/FAQList';
 import FAQForm from './components/FAQForm';
 import FAQEdit from './components/FAQEdit';
+import YoutubeVideoList from './components/YoutubeVideoList';
+import YoutubeVideoForm from './components/YoutubeVideoForm';
+import YoutubeVideoEdit from './components/YoutubeVideoEdit';
 
 function App() {
   return (
@@ -404,6 +407,31 @@ function App() {
         element={
           <ProtectedRoute>
             <FAQEdit />
+          </ProtectedRoute>
+        }
+      />
+      {/* YouTube Video Routes */}
+      <Route
+        path="/youtube-videos"
+        element={
+          <ProtectedRoute>
+            <YoutubeVideoList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/youtube-videos/new"
+        element={
+          <ProtectedRoute>
+            <YoutubeVideoForm />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/youtube-videos/edit/:id"
+        element={
+          <ProtectedRoute>
+            <YoutubeVideoEdit />
           </ProtectedRoute>
         }
       />

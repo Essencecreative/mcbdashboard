@@ -918,3 +918,87 @@ export const deleteFAQ = async (id) => {
     throw new Error(err.message || "Failed to delete FAQ");
   }
 };
+// YouTube Video API functions
+export const createYoutubeVideo = async (videoData) => {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(`${API_BASE}/youtube-videos`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+    body: JSON.stringify(videoData),
+  });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || "Failed to create YouTube video");
+  }
+
+  const data = await res.json();
+  return data.video;
+};
+
+export const getYoutubeVideos = async () => {
+  const token = localStorage.getItem("token");
+  
+  const res = await fetch(`${API_BASE}/youtube-videos/all`, {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  });
+  if (!res.ok) throw new Error("Failed to fetch YouTube videos");
+  const data = await res.json();
+  return data.videos || [];
+};
+
+export const getYoutubeVideo = async (id) => {
+  const token = localStorage.getItem("token");
+  
+  const res = await fetch(`${API_BASE}/youtube-videos/${id}`, {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  });
+  if (!res.ok) throw new Error("YouTube video not found");
+  const data = await res.json();
+  return data.video;
+};
+
+export const updateYoutubeVideo = async (id, videoData) => {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(`${API_BASE}/youtube-videos/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+    body: JSON.stringify(videoData),
+  });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || "Failed to update YouTube video");
+  }
+
+  const data = await res.json();
+  return data.video;
+};
+
+export const deleteYoutubeVideo = async (id) => {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(`${API_BASE}/youtube-videos/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || "Failed to delete YouTube video");
+  }
+};

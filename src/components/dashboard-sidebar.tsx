@@ -22,6 +22,7 @@ import {
   Menu,
   FileText,
   HelpCircle,
+  Youtube,
 } from "lucide-react"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible"
 import {
@@ -338,6 +339,19 @@ export default function DashboardSidebar() {
                   >
                     <Layers className="h-4 w-4 text-white" />
                     <span>{t("sidebar.homeCarousel")}</span>
+                  </SidebarMenuButton>
+                </Link>
+              </SidebarMenuItem>
+
+              {/* YouTube Videos */}
+              <SidebarMenuItem>
+                <Link to="/youtube-videos">
+                  <SidebarMenuButton
+                    isActive={isActive("/youtube-videos")}
+                    className="text-white hover:bg-white/10 data-[active=true]:bg-white/20"
+                  >
+                    <Youtube className="h-4 w-4 text-white" />
+                    <span>YouTube Videos</span>
                   </SidebarMenuButton>
                 </Link>
               </SidebarMenuItem>
